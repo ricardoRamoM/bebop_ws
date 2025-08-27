@@ -155,6 +155,8 @@ source devel/setup.bash
 
 ## ▶️ Uso del Drone Parrot Bebop 2
 
+<a id="conexion-con-el-dron"></a>
+
 ### 1️⃣ Conexión con el dron
 
 ---
@@ -247,6 +249,7 @@ rtt min/avg/max/mdev = 1.567/23.327/166.341/43.711 ms
 
 ---
 
+<a id="iniciar-ros"></a>
 
 ### 2️⃣ Iniciar ROS
 
@@ -261,6 +264,8 @@ roscore
 
 ---
 
+<a id="lanzar-el-nodo-principal"></a>
+
 ### 3️⃣ Lanzar el Nodo Principal
 
 El nodo principal del Bebop (`bebop_node`) controla la comunicación con el dron, recibe datos de sensores y envía comandos de vuelo.
@@ -274,6 +279,8 @@ roslaunch bebop_driver bebop_node.launch
 > Una vez lanzado, el dron estará listo para recibir comandos y enviar datos a ROS.
 
 ---
+
+<a id="comandos-basicos"></a>
 
 ### 4️⃣ Comandos Básicos
 
@@ -428,6 +435,7 @@ rostopic pub --once /bebop/reset std_msgs/Empty "{}"
 
 ---
 
+<a id="verificar-topicos-disponibles"></a>
 
 ### 5️⃣ Verificar Tópicos Disponibles
 
@@ -462,6 +470,8 @@ rostopic echo /bebop/states/common/CommonState/BatteryStateChanged
 
 ---
 
+<a id="ver-la-camara"></a>
+
 ### 6️⃣ Ver la Cámara
 
 Permite **visualizar la cámara delantera del dron en tiempo real**.
@@ -474,6 +484,8 @@ rqt_image_view /bebop/image_raw
 > Esto es útil para inspeccionar el entorno o hacer pruebas de visión por computadora.
 
 ---
+
+<a id="visualizar-nodos-y-topicos-rqt-graph"></a>
 
 ### 7️⃣ Visualizar Nodos y Tópicos (`rqt_graph`)
 
@@ -503,6 +515,8 @@ Ejemplo de flujo básico en Bebop:
 ```
 
 ---
+
+<a id="ejemplo-python-vuelo-simple"></a>
 
 ### 8️⃣ Ejemplo Python - Vuelo Simple
 
@@ -545,6 +559,8 @@ time.sleep(5)
 ```
 
 ---
+
+<a id="diagrama-basico-del-flujo-de-vuelo"></a>
 
 ### 9️⃣ Diagrama Básico del Flujo de Vuelo
 
