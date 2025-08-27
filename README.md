@@ -71,19 +71,15 @@ Hacer el sourcing
 
 1. Crear catkin workspace. Crear carpeta "bebop_ws" y dentro la carpeta "src". Y en la primera hacer catkin_make.
 
-
-    mkdir bebop_ws
-    cd bebop_ws
-    mkdir src
-    catkin_make
-
+        mkdir bebop_ws
+        cd bebop_ws
+        mkdir src
+        catkin_make
 
 2. Hacer Sourcing. Entrar a carpeta devel y ejecutar
 
-
-    cd devel
-    source setup.bashrc 
-
+        cd devel
+        source setup.bashrc 
 
 O para automatizarlo ejecuta la siguiente linea 
 
