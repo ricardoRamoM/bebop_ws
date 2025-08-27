@@ -21,10 +21,13 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
   - [4️⃣ Comandos Básicos](#comandos-basicos)
   - [5️⃣ Verificar Tópicos Disponibles](#verificar-topicos-disponibles)
   - [6️⃣ Ver la Cámara](#ver-la-camara)
-  - [7️⃣ Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt_graph)
-  - [8️⃣ Ejemplo Python - Vuelo Simple](#ejemplo-python---vuelo-simple)
+  - [7️⃣ Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt-graph)
+  - [8️⃣ Ejemplo Python - Vuelo Simple](#ejemplo-python-vuelo-simple)
   - [9️⃣ Diagrama Básico del Flujo de Vuelo](#diagrama-basico-del-flujo-de-vuelo)
 
+
+
+ 
 ---
 
 
