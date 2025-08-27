@@ -129,11 +129,11 @@ source devel/setup.bash
 
 ## 1️⃣ Conexión con el dron
 
-Para controlar el Bebop 2, primero debes conectarte a su red WiFi y verificar la conexión.
+---
 
 ### 🔹 Conectar a la red WiFi del Bebop
 
-Conéctate desde la **configuración de tu sistema** o usando la siguiente línea de comando:
+Conéctate desde la configuración de tu sistema o usando la siguiente línea de comando:
 
 ```bash
 nmcli dev wifi connect "Bebop2-XXXXXX"
@@ -141,7 +141,46 @@ nmcli dev wifi connect "Bebop2-XXXXXX"
 
 > Reemplaza `"Bebop2-XXXXXX"` con el nombre exacto de la red de tu dron.
 
-### 🔹 Verificar conexión con `ping`
+---
+
+### 🔹 Verificar IP y conexión de red
+
+Después de conectarte, debes asegurarte de que tu equipo tiene la IP correcta y puede comunicarse con el dron.
+
+1. **Comprobar la red conectada**
+
+   ```bash
+   iwconfig
+   ```
+
+   * **Para qué sirve:** Muestra la interfaz inalámbrica y la red actual.
+   * **Qué deberías ver:** El nombre de la interfaz (ej. `wlo1`) y el SSID del dron (`Bebop2-XXXXXX`).
+
+2. **Confirmar la IP asignada**
+
+   ```bash
+   ifconfig wlo1
+   ```
+
+   * **Para qué sirve:** Verifica la configuración de la interfaz WiFi.
+   * **Qué deberías ver:** Una IP en el rango `192.168.42.xx`. Ejemplo:
+
+     ```
+     inet 192.168.42.22  netmask 255.255.255.0
+     ```
+
+3. **Asignar IP manualmente si no hay**
+
+   ```bash
+   sudo dhclient wlo1
+   ```
+
+   * **Para qué sirve:** Solicita una dirección IP al dron.
+   * **Qué deberías ver:** Tras ejecutar de nuevo `ifconfig wlo1`, ahora aparece la IP correcta.
+
+---
+
+### 🔹 Verificar conexión con ping
 
 ```bash
 ping 192.168.42.1
@@ -149,9 +188,9 @@ ping 192.168.42.1
 
 Al probar la conexión, pueden ocurrir dos casos:
 
-**❌ Respuesta incorrecta (sin conexión activa):**
+❌ **Respuesta incorrecta (sin conexión activa):**
 
-```bash
+```
 PING 192.168.42.1 (192.168.42.1) 56(84) bytes of data.
 From 192.168.42.22 icmp_seq=1 Destination Host Unreachable
 ^C
@@ -159,9 +198,9 @@ From 192.168.42.22 icmp_seq=1 Destination Host Unreachable
 3 packets transmitted, 0 received, +1 errors, 100% packet loss, time 2033ms
 ```
 
-**✅ Respuesta correcta (conexión activa):**
+✅ **Respuesta correcta (conexión activa):**
 
-```bash
+```
 PING 192.168.42.1 (192.168.42.1) 56(84) bytes of data.
 64 bytes from 192.168.42.1: icmp_seq=1 ttl=64 time=2.76 ms
 64 bytes from 192.168.42.1: icmp_seq=2 ttl=64 time=3.01 ms
@@ -174,10 +213,12 @@ rtt min/avg/max/mdev = 1.567/23.327/166.341/43.711 ms
 ```
 
 💡 **Interpretación:**
-Si ves el ejemplo ✅, la conexión con el dron está activa y puedes continuar con los comandos de ROS.
-Si aparece el ejemplo ❌, revisa la conexión WiFi, la dirección IP y asegúrate de que el dron esté encendido.
+
+* Si ves el ejemplo ✅, la conexión con el dron está activa y puedes continuar con los comandos de ROS.
+* Si aparece el ejemplo ❌, revisa la conexión WiFi, la IP y asegúrate de que el dron esté encendido.
 
 ---
+
 
 ## 2️⃣ Iniciar ROS
 
