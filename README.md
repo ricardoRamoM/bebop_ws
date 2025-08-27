@@ -11,31 +11,9 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
 ---
 
 ## 📋 Índice
-1️⃣ [Requisitos](#-requisitos)  
-2️⃣ [Conexión con el dron](#1️⃣-conexión-con-el-dron)  
-3️⃣ [Iniciar ROS](#2️⃣-iniciar-ros)  
-4️⃣ [Lanzar el Nodo Principal](#3️⃣-lanzar-el-nodo-principal)  
-5️⃣ [Comandos Básicos](#4️⃣-comandos-básicos)  
-6️⃣ [Verificar Tópicos Disponibles](#5️⃣-verificar-tópicos-disponibles)  
-7️⃣ [Ver la Cámara](#6️⃣-ver-la-cámara)  
-8️⃣ [Visualizar Nodos y Tópicos (rqt_graph)](#7️⃣-visualizar-nodos-y-tópicos-rqt_graph)  
-9️⃣ [Ejemplo de Control con Python](#8️⃣-ejemplo-python---vuelo-simple)  
 
 ---
----
 
-## 📋 Índice
-1️⃣ [Requisitos](#-requisitos)  
-2️⃣ [Conexión con el dron](#1️⃣-conexión-con-el-dron)  
-3️⃣ [Iniciar ROS](#2️⃣-iniciar-ros)  
-4️⃣ [Lanzar el Nodo Principal](#3️⃣-lanzar-el-nodo-principal)  
-5️⃣ [Comandos Básicos](#4️⃣-comandos-básicos)  
-6️⃣ [Verificar Tópicos Disponibles](#5️⃣-verificar-tópicos-disponibles)  
-7️⃣ [Ver la Cámara](#6️⃣-ver-la-cámara)  
-8️⃣ [Visualizar Nodos y Tópicos (rqt_graph)](#7️⃣-visualizar-nodos-y-tópicos-rqt_graph)  
-9️⃣ [Ejemplo de Control con Python](#8️⃣-ejemplo-python---vuelo-simple)  
-
----
 
 ## 📦 Estructura del Proyecto
 
@@ -153,13 +131,13 @@ source devel/setup.bash
 
 ---
 
-# ▶️ Uso del Drone Parrot Bebop 2
+## ▶️ Uso del Drone Parrot Bebop 2
 
-## 1️⃣ Conexión con el dron
+### 1️⃣ Conexión con el dron
 
 ---
 
-### 🔹 Conectar a la red WiFi del Bebop
+#### 🔹 Conectar a la red WiFi del Bebop
 
 Conéctate desde la configuración de tu sistema o usando la siguiente línea de comando:
 
@@ -171,7 +149,7 @@ nmcli dev wifi connect "Bebop2-XXXXXX"
 
 ---
 
-### 🔹 Verificar IP y conexión de red
+#### 🔹 Verificar IP y conexión de red
 
 Después de conectarte, debes asegurarte de que tu equipo tiene la IP correcta y puede comunicarse con el dron.
 
@@ -208,7 +186,7 @@ Después de conectarte, debes asegurarte de que tu equipo tiene la IP correcta y
 
 ---
 
-### 🔹 Verificar conexión con ping
+#### 🔹 Verificar conexión con ping
 
 ```bash
 ping 192.168.42.1
@@ -248,7 +226,7 @@ rtt min/avg/max/mdev = 1.567/23.327/166.341/43.711 ms
 ---
 
 
-## 2️⃣ Iniciar ROS
+### 2️⃣ Iniciar ROS
 
 Antes de ejecutar cualquier nodo o comando, debes iniciar el **roscore**, que es el núcleo de ROS.
 `roscore` es un servicio que permite que todos los nodos y tópicos de ROS se comuniquen entre sí.
@@ -261,7 +239,7 @@ roscore
 
 ---
 
-## 3️⃣ Lanzar el Nodo Principal
+### 3️⃣ Lanzar el Nodo Principal
 
 El nodo principal del Bebop (`bebop_node`) controla la comunicación con el dron, recibe datos de sensores y envía comandos de vuelo.
 Para iniciarlo:
@@ -275,7 +253,7 @@ roslaunch bebop_driver bebop_node.launch
 
 ---
 
-## 4️⃣ Comandos Básicos
+### 4️⃣ Comandos Básicos
 
 Esta sección te permite **controlar el dron desde la terminal** mediante `rostopic pub`, publicando mensajes en los tópicos correspondientes.
 
@@ -284,14 +262,14 @@ Esta sección te permite **controlar el dron desde la terminal** mediante `rosto
 ---
 
 
-### 🔹 Diferencia entre `--once` y `-r <rate>`
+#### 🔹 Diferencia entre `--once` y `-r <rate>`
 
 > 🟢 `--once` → Movimiento **instantáneo**, solo un impulso breve.
 > 🔵 `-r 10` → Movimiento **continuo**, se repite 10 veces por segundo hasta detenerlo (Ctrl+C o Detener movimiento).
 
 ---
 
-### 🔹 Despegar y aterrizar
+#### 🔹 Despegar y aterrizar
 
 | Acción    | Comando                                                  | Explicación                                                   |
 | --------- | -------------------------------------------------------- | ------------------------------------------------------------- |
@@ -300,9 +278,9 @@ Esta sección te permite **controlar el dron desde la terminal** mediante `rosto
 
 ---
 
-### 🔹 Movimientos Básicos del Bebop
+#### 🔹 Movimientos Básicos del Bebop
 
-#### 1️⃣ Avanzar / Retroceder
+##### 1️⃣ Avanzar / Retroceder
 
 * **🟢 Instantáneo:**
 
@@ -326,7 +304,7 @@ Avanza continuamente a 0.2 m/s hasta que presiones Ctrl+C o publiques **Detener 
 
 ---
 
-#### 2️⃣ Giros (izquierda / derecha)
+##### 2️⃣ Giros (izquierda / derecha)
 
 * **🟢 Instantáneo:**
 
@@ -346,7 +324,7 @@ rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
 
 ---
 
-#### 3️⃣ Subir / Bajar
+##### 3️⃣ Subir / Bajar
 
 * **🟢 Instantáneo:**
 
@@ -374,7 +352,7 @@ rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
 
 ---
 
-#### 4️⃣ Movimiento lateral (izquierda / derecha)
+##### 4️⃣ Movimiento lateral (izquierda / derecha)
 
 * **🟢 Instantáneo:**
 
@@ -402,7 +380,7 @@ rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
 
 ---
 
-### 🔹 Detener o emergencia
+#### 🔹 Detener o emergencia
 
 * **Detener movimiento:** Frenar inmediatamente cualquier movimiento continuo:
 
@@ -429,7 +407,7 @@ rostopic pub --once /bebop/reset std_msgs/Empty "{}"
 ---
 
 
-## 5️⃣ Verificar Tópicos Disponibles
+### 5️⃣ Verificar Tópicos Disponibles
 
 Los **tópicos** son canales de comunicación entre nodos de ROS.
 Esta sección permite **ver qué información envía y recibe el dron**, como la cámara, la odometría o la batería.
@@ -462,7 +440,7 @@ rostopic echo /bebop/states/common/CommonState/BatteryStateChanged
 
 ---
 
-## 6️⃣ Ver la Cámara
+### 6️⃣ Ver la Cámara
 
 Permite **visualizar la cámara delantera del dron en tiempo real**.
 Se usa `rqt_image_view` para abrir una ventana donde se muestra el video:
@@ -475,25 +453,7 @@ rqt_image_view /bebop/image_raw
 
 ---
 
-## 7️⃣ Visualizar Nodos y Tópicos (`rqt_graph`)
-
-```bash
-rqt_graph
-```
-
-Esto muestra un **diagrama interactivo** de todos los nodos y cómo se comunican mediante topics.
-Ejemplo de flujo básico en Bebop:
-
-```
-         +-------------+
-         |bebop_node   |
-         +-------------+
-          /     |      \
-     cmd_vel  camera    state
-       |       |        |
-   [motores] [video] [info]
-```
-## 7️⃣ Visualizar Nodos y Tópicos (rqt\_graph)
+### 7️⃣ Visualizar Nodos y Tópicos (`rqt_graph`)
 
 `rqt_graph` muestra un **diagrama visual de los nodos y sus conexiones** en ROS.
 Esto te ayuda a entender cómo se comunican los distintos componentes del dron, por ejemplo:
@@ -508,9 +468,21 @@ rqt_graph
 
 > Ideal para depurar problemas o entender la arquitectura de ROS si eres nuevo en el sistema.
 
+Ejemplo de flujo básico en Bebop:
+
+```
+         +-------------+
+         |bebop_node   |
+         +-------------+
+          /     |      \
+     cmd_vel  camera    state
+       |        |         |
+   [motores]  [video]   [info]
+```
+
 ---
 
-## 8️⃣ Ejemplo Python - Vuelo Simple
+### 8️⃣ Ejemplo Python - Vuelo Simple
 
 ```python
 #!/usr/bin/env python3
@@ -552,7 +524,7 @@ time.sleep(5)
 
 ---
 
-## 9️⃣ Diagrama Básico del Flujo de Vuelo
+### 9️⃣ Diagrama Básico del Flujo de Vuelo
 
 ```
 [ TAKEOFF ] → [ CMD_VEL (mover/girar) ] → [ LAND ]
