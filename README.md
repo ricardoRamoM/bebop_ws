@@ -30,6 +30,7 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
  
 ---
 
+<a id="estructura-del-proyecto"></a>
 
 ## 📦 Estructura del Proyecto
 
@@ -43,6 +44,8 @@ bebop_ws/
 ```
 
 ---
+
+<a id="requisitos"></a>
 
 ## ✅ Requisitos
 
@@ -83,6 +86,7 @@ sudo apt-get install -y \
 ```
 
 ---
+<a id="instalacion-desde-cero"></a>
 
 ## 🔧 Instalación desde Cero
 
@@ -146,6 +150,8 @@ source devel/setup.bash
 ```
 
 ---
+
+<a id="uso-del-drone-parrot-bebop-2"></a>
 
 ## ▶️ Uso del Drone Parrot Bebop 2
 
