@@ -109,8 +109,6 @@ No olvides actualizar tu entorno:
 
 
 
-Aquí tienes un texto plano en **Markdown** que te sirve como guía rápida para trabajar con el **Parrot Bebop 2** en **ROS Noetic**:
-
 ---
 
 # Uso del dron **Parrot Bebop 2** con ROS Noetic
@@ -221,13 +219,13 @@ rostopic echo /bebop/odom
 
 ---
 
-¿Quieres que te arme también un **mini-cheatsheet en tabla** con los comandos más usados (tipo “acción → comando”)?
+
 
 
 
 Claro, aquí tienes todo listo en **texto plano Markdown** para que lo copies directamente a tu README.md:
 
-````markdown
+
 # 🚁 Conexión y Comandos Básicos del Bebop con ROS
 
 Este apartado explica cómo **verificar la conexión con el dron**, lanzar el nodo principal de ROS y ejecutar comandos básicos desde la terminal.
