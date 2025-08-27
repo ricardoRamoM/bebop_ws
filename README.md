@@ -14,35 +14,35 @@ Este repositorio contiene un workspace de **ROS Noetic** con paquetes para contr
 - ROS Noetic instalado ([Instrucciones oficiales](http://wiki.ros.org/noetic/Installation/Ubuntu))
 - Dependencias ROS. Primero asegúrate de tener las de ROS:
 
-    sudo apt-get update
-    sudo apt-get install -y \
-        ros-$ROS_DISTRO-cmake-modules \
-        ros-$ROS_DISTRO-image-transport \
-        ros-$ROS_DISTRO-diagnostic-updater \
-        ros-$ROS_DISTRO-tf \
-        ros-$ROS_DISTRO-tf2-ros \
-        ros-$ROS_DISTRO-message-filters \
-        ros-$ROS_DISTRO-camera-info-manager
+        sudo apt-get update
+        sudo apt-get install -y \
+            ros-$ROS_DISTRO-cmake-modules \
+            ros-$ROS_DISTRO-image-transport \
+            ros-$ROS_DISTRO-diagnostic-updater \
+            ros-$ROS_DISTRO-tf \
+            ros-$ROS_DISTRO-tf2-ros \
+            ros-$ROS_DISTRO-message-filters \
+            ros-$ROS_DISTRO-camera-info-manager
 
 - Librerías del sistema (Parrot SDK + multimedia)
 
-    sudo apt-get install -y \
-        build-essential \
-        cmake \
-        git \
-        python3-catkin-tools \
-        libavcodec-dev \
-        libavdevice-dev \
-        libavformat-dev \
-        libavutil-dev \
-        libswscale-dev \
-        libeigen3-dev \
-        libopencv-dev \
-        libsdl1.2-dev \
-        libusb-1.0-0-dev \
-        libgles2-mesa-dev \
-        libcurl4-openssl-dev \
-        unzip
+        sudo apt-get install -y \
+            build-essential \
+            cmake \
+            git \
+            python3-catkin-tools \
+            libavcodec-dev \
+            libavdevice-dev \
+            libavformat-dev \
+            libavutil-dev \
+            libswscale-dev \
+            libeigen3-dev \
+            libopencv-dev \
+            libsdl1.2-dev \
+            libusb-1.0-0-dev \
+            libgles2-mesa-dev \
+            libcurl4-openssl-dev \
+            unzip
 
 
 Dependencies extras:
@@ -63,22 +63,28 @@ Compilar el workspace:
     catkin_make
 
 Hacer el sourcing
+
     echo "source <path_to_your_catkin_ws>/devel/setup.bash" >> ~/.bashrc
+
 
 ## Instalación desde cero
 
 1. Crear catkin workspace. Crear carpeta "bebop_ws" y dentro la carpeta "src". Y en la primera hacer catkin_make.
- 	
-	mkdir bebop_ws
-	cd bebop_ws
-	mkdir src
- 	catkin_make
+
+
+    mkdir bebop_ws
+    cd bebop_ws
+    mkdir src
+    catkin_make
+
 
 2. Hacer Sourcing. Entrar a carpeta devel y ejecutar
 
+
     cd devel
     source setup.bashrc 
- 	
+
+
 O para automatizarlo ejecuta la siguiente linea 
 
     echo "source ~/bebop_ws/devel/setup.bash" >> ~/.bashrc
@@ -117,5 +123,8 @@ Build:
 	catkin_make -j1
 
 No olvides actualizar tu entorno:
-	source <path_to_your_catkin_ws>/devel/setup.bash 		
+
+	source <path_to_your_catkin_ws>/devel/setup.bash 	
+
+
 
