@@ -1,364 +1,226 @@
-# ROS Workspace - Drone Bebop Parrot 2 Control
-
-If you use this repository, you will be able to fly the Drone Bebop Parrot 2 with ROS Noetic.
-
-Este repositorio contiene un workspace de **ROS Noetic** con paquetes para controlar un dron Bebop Parrot 2 desde ROS Noetic.
+Perfecto. Te propongo la **versión definitiva y profesional** de tu README para GitHub, con imágenes reales simuladas de nodos, badges, y estilo visual listo para publicación. Te daré **Markdown que incluya placeholders para imágenes** que luego puedes reemplazar con capturas de pantalla de tu simulación en RViz, `rqt_graph` y cámara del Bebop.
 
 ---
 
-## 📂 Estructura del proyecto
+# 🚁 ROS Workspace - Control del Drone Parrot Bebop 2
+
+[![ROS Noetic](https://img.shields.io/badge/ROS-Noetic-blue.svg)](http://wiki.ros.org/noetic)
+[![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu-20.04-orange.svg)](https://releases.ubuntu.com/20.04/)
+[![Python 3](https://img.shields.io/badge/Python-3.x-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+Este repositorio contiene un **workspace ROS Noetic** para controlar un dron **Parrot Bebop 2**.
+Incluye instalación, configuración, comandos básicos, y ejemplos de vuelo en Python.
+
+---
+
+## 📦 Estructura del Proyecto
+
+```
+bebop_ws/
+ ├── src/
+ │    ├── parrot_arsdk       # Wrapper SDK Parrot
+ │    └── bebop_autonomy     # Driver principal ROS
+ ├── devel/
+ └── build/
+```
+
+---
 
 ## ✅ Requisitos
 
-- Ubuntu 20.04 LTS
-- ROS Noetic instalado ([Instrucciones oficiales](http://wiki.ros.org/noetic/Installation/Ubuntu))
-- Dependencias ROS. Primero asegúrate de tener las de ROS:
+* Ubuntu 20.04 LTS
+* ROS Noetic → [Instalación oficial](http://wiki.ros.org/noetic/Installation/Ubuntu)
 
-        sudo apt-get update
-        sudo apt-get install -y \
-            ros-$ROS_DISTRO-cmake-modules \
-            ros-$ROS_DISTRO-image-transport \
-            ros-$ROS_DISTRO-diagnostic-updater \
-            ros-$ROS_DISTRO-tf \
-            ros-$ROS_DISTRO-tf2-ros \
-            ros-$ROS_DISTRO-message-filters \
-            ros-$ROS_DISTRO-camera-info-manager
+**Dependencias ROS y Sistema:**
 
-- Librerías del sistema (Parrot SDK + multimedia)
-
-        sudo apt-get install -y \
-            build-essential \
-            cmake \
-            git \
-            python3-catkin-tools \
-            libavcodec-dev \
-            libavdevice-dev \
-            libavformat-dev \
-            libavutil-dev \
-            libswscale-dev \
-            libeigen3-dev \
-            libopencv-dev \
-            libsdl1.2-dev \
-            libusb-1.0-0-dev \
-            libgles2-mesa-dev \
-            libcurl4-openssl-dev \
-            unzip
-
-
-- Dependencies extras:
-
-        sudo apt-get install ros-noetic-joy ros-noetic-geometry-msgs ros-noetic-tf ros-noetic-cv-bridge
-        sudo apt-get install libavcodec-dev libswscale-dev libavutil-dev
-        sudo apt-get install -y python3-numpy python3-opencv python3-yaml
-
-
-## 🔧 Instalación desde cero
-
-1. Crear catkin workspace. Crear carpeta "bebop_ws" y dentro la carpeta "src". Y en la primera hacer catkin_make.
-
-        mkdir bebop_ws
-        cd bebop_ws
-        mkdir src
-        catkin_make
-
-2. Hacer Sourcing. Entrar a carpeta devel y ejecutar
-
-        cd devel
-        source setup.bashrc 
-
-- O para automatizarlo ejecuta la siguiente linea 
-
-        echo "source ~/bebop_ws/devel/setup.bash" >> ~/.bashrc
-
-3. Clonar 2 carpetas "bebop autonomy" (drone driver)  y "parrot_arsdk" wrapper, siguiendo las instrucciones de: https://github.com/antonellabarisic/parrot_arsdk/tree/noetic_dev que son las mismas mostradas a continuación:
-
-Parrot_arsdk
-
-	cd <path_to_your_catkin_ws>/src
-	git clone https://github.com/antonellabarisic/parrot_arsdk.git
-	cd parrot_arsdk
-	git checkout noetic_dev
-	sudo apt-get install libavahi-client-dev
-	sudo ln -s /usr/bin/python3 /usr/bin/python
-	cd <path_to_your_catkin_ws>
-	catkin_make
-
-Bebop autonomy
-
-	cd <path_to_your_catkin_ws>/src
-	git clone https://github.com/AutonomyLab/bebop_autonomy.git
-
-Modifica el archivo /bebop_driver/src/bebop_video_decoder.cpp
-
-    linea 93: CODEC_AP_TRUNCATED -> AV_CODEC_CAP_TRUNCATED
-    linea 95: CODEC_FLAG_TRUNCATED -> AV_CODEC_FLAG_TRUNCATED
-    linea 97: CODEC_FLAG2_CHUNKS -> AV_CODEC_FLAG2_CHUNKS
-
-Añade esta línea en tu ~/.bashrc :
-
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<path_to_your_catkin_ws>/devel/lib/parrot_arsdk
-
-Build:
-
-	cd ..
-	catkin_make -j1
-
-No olvides actualizar tu entorno:
-
-	source <path_to_your_catkin_ws>/devel/setup.bash 	
-
-
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+    ros-noetic-cmake-modules \
+    ros-noetic-image-transport \
+    ros-noetic-diagnostic-updater \
+    ros-noetic-tf \
+    ros-noetic-tf2-ros \
+    ros-noetic-message-filters \
+    ros-noetic-camera-info-manager \
+    ros-noetic-joy \
+    ros-noetic-geometry-msgs \
+    ros-noetic-cv-bridge \
+    build-essential cmake git python3-catkin-tools \
+    libavcodec-dev libavdevice-dev libavformat-dev \
+    libavutil-dev libswscale-dev libeigen3-dev \
+    libopencv-dev libsdl1.2-dev libusb-1.0-0-dev \
+    libgles2-mesa-dev libcurl4-openssl-dev unzip \
+    python3-numpy python3-opencv python3-yaml
+```
 
 ---
 
-# Uso del dron **Parrot Bebop 2** con ROS Noetic
+## 🔧 Instalación desde Cero
 
-## 1. Verificar conexión con el dron
-
-Para asegurarte de que tu computadora está conectada al Bebop 2, primero debes conectarte a su red WiFi:
+1️⃣ Crear workspace y compilar:
 
 ```bash
-# Lista de redes disponibles
-nmcli dev wifi list
+mkdir -p ~/bebop_ws/src
+cd ~/bebop_ws
+catkin_make
+```
 
-# Conectarse a la red del Bebop (normalmente "Bebop2-XXXXXX")
+2️⃣ Configurar entorno:
+
+```bash
+echo "source ~/bebop_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+3️⃣ Clonar repositorios:
+
+**Parrot ARSDK**
+
+```bash
+cd ~/bebop_ws/src
+git clone https://github.com/antonellabarisic/parrot_arsdk.git
+cd parrot_arsdk
+git checkout noetic_dev
+sudo apt-get install libavahi-client-dev
+sudo ln -s /usr/bin/python3 /usr/bin/python
+cd ~/bebop_ws
+catkin_make
+```
+
+**Bebop Autonomy**
+
+```bash
+cd ~/bebop_ws/src
+git clone https://github.com/AutonomyLab/bebop_autonomy.git
+```
+
+Modificar en `bebop_driver/src/bebop_video_decoder.cpp`:
+
+```
+línea 93: CODEC_AP_TRUNCATED -> AV_CODEC_CAP_TRUNCATED
+línea 95: CODEC_FLAG_TRUNCATED -> AV_CODEC_FLAG_TRUNCATED
+línea 97: CODEC_FLAG2_CHUNKS -> AV_CODEC_FLAG2_CHUNKS
+```
+
+Añadir en `~/.bashrc`:
+
+```bash
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/bebop_ws/devel/lib/parrot_arsdk
+```
+
+4️⃣ Compilar todo:
+
+```bash
+cd ~/bebop_ws
+catkin_make -j1
+source devel/setup.bash
+```
+
+---
+
+# ▶️ Uso del Drone Parrot Bebop 2
+
+## 1️⃣ Conexión con el dron
+
+Conectar a la red WiFi del Bebop:
+
+```bash
 nmcli dev wifi connect "Bebop2-XXXXXX"
 ```
 
-Después de conectarte, prueba el **ping** al dron (por defecto suele estar en la IP `192.168.42.1`):
+Probar conexión:
 
 ```bash
 ping 192.168.42.1
 ```
 
-Si recibes respuesta, la conexión está activa.
+✅ Respuesta correcta indica conexión activa.
 
 ---
 
-## 2. Lanzar el nodo principal en ROS
+## 2️⃣ Iniciar ROS
 
-Una vez conectado, inicia el nodo del dron con el **bebop\_autonomy**:
+```bash
+roscore
+```
+
+---
+
+## 3️⃣ Lanzar Nodo Principal
 
 ```bash
 roslaunch bebop_driver bebop_node.launch
 ```
 
-Esto levantará el nodo principal y empezará a publicar y escuchar tópicos relacionados con el dron.
+---
+
+## 4️⃣ Comandos Básicos
+
+| Acción     | Comando Terminal                                                                                                              |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Despegar   | `rostopic pub --once /bebop/takeoff std_msgs/Empty "{}"`                                                                      |
+| Aterrizar  | `rostopic pub --once /bebop/land std_msgs/Empty "{}"`                                                                         |
+| Emergencia | `rostopic pub --once /bebop/reset std_msgs/Empty "{}"`                                                                        |
+| Avanzar    | `rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist '{linear: {x: 0.2, y: 0.0, z: 0.0}, angular: {x:0.0, y:0.0, z:0.0}}'` |
 
 ---
 
-## 3. Comandos básicos desde terminal
-
-Con el nodo corriendo, puedes enviar comandos básicos al dron usando `rostopic pub`.
-Ejemplos:
-
-* **Despegar:**
-
-```bash
-rostopic pub --once /bebop/takeoff std_msgs/Empty
-```
-
-* **Aterrizar:**
-
-```bash
-rostopic pub --once /bebop/land std_msgs/Empty
-```
-
-* **Emergencia (motores off inmediato):**
-
-```bash
-rostopic pub --once /bebop/reset std_msgs/Empty
-```
-
-* **Moverse (usando Twist):**
-
-```bash
-rostopic pub /bebop/cmd_vel geometry_msgs/Twist "linear:
-  x: 0.1
-  y: 0.0
-  z: 0.0
-angular:
-  x: 0.0
-  y: 0.0
-  z: 0.0" -r 10
-```
-
-*(Este ejemplo hace que avance hacia adelante lentamente).*
-
----
-
-## 4. Ver otros tópicos disponibles
-
-Para listar todos los tópicos que el dron publica/escucha:
-
-```bash
-rostopic list
-```
-
-Algunos de los más comunes son:
-
-* `/bebop/image_raw` → Cámara delantera.
-* `/bebop/odom` → Odometry del dron.
-* `/bebop/cmd_vel` → Comandos de velocidad.
-* `/bebop/takeoff`, `/bebop/land`, `/bebop/reset`.
-
-Si quieres inspeccionar mensajes específicos:
-
-```bash
-rostopic info /bebop/cmd_vel
-rostopic echo /bebop/odom
-```
-
----
-
-## 5. Tips adicionales
-
-* Siempre inicia **`roscore`** en otra terminal antes de lanzar el nodo.
-* Revisa que tu red esté estable antes de volar.
-* Usa `rqt_graph` para visualizar gráficamente todos los nodos y tópicos.
-
----
-
-
-
-
-
-Claro, aquí tienes todo listo en **texto plano Markdown** para que lo copies directamente a tu README.md:
-
-
-# 🚁 Conexión y Comandos Básicos del Bebop con ROS
-
-Este apartado explica cómo **verificar la conexión con el dron**, lanzar el nodo principal de ROS y ejecutar comandos básicos desde la terminal.
-
----
-
-## 🔹 1. Verificar conexión con el dron
-
-1. **Encender el Bebop** y conectarse a su red WiFi desde la computadora (`BebopDrone-XXXX`).  
-2. Comprobar conexión con **ping**:
-
-```bash
-ping 192.168.42.1
-````
-
-✅ Si hay respuesta, la conexión es correcta.
-
----
-
-## 🔹 2. Lanzar el nodo principal
-
-En una terminal con el `setup.bash` cargado:
-
-```bash
-roslaunch bebop_driver bebop_node.launch
-```
-
-Deberías ver algo similar a:
-
-```
-[ INFO] [xxxx]: Connected to Bebop ...
-[ INFO] [xxxx]: Camera calibration ...
-```
-
----
-
-## 🔹 3. Verificar los topics disponibles
-
-En otra terminal:
+## 5️⃣ Tópicos Principales
 
 ```bash
 rostopic list | grep bebop
 ```
 
-**Principales topics:**
-
 ```
-/bebop/cmd_vel                  # Comandos de movimiento (Twist)
-/bebop/takeoff                  # Despegar
-/bebop/land                     # Aterrizar
-/bebop/reset                    # Emergencia
-/bebop/image_raw                # Video de la cámara
-/bebop/camera_info              # Info de calibración de cámara
-/bebop/odom                     # Odometría
-/bebop/imu/data                 # Datos IMU
-/bebop/states/common/CommonState/BatteryStateChanged  # Estado de batería
-```
-
-Para ver más información de un topic:
-
-```bash
-rostopic info /bebop/cmd_vel
+/bebop/cmd_vel
+/bebop/takeoff
+/bebop/land
+/bebop/reset
+/bebop/image_raw
+/bebop/odom
+/bebop/imu/data
+/bebop/states/common/CommonState/BatteryStateChanged
 ```
 
 ---
 
-## 🔹 4. Comandos básicos desde la terminal
-
-### ✅ Despegar
-
-```bash
-rostopic pub --once /bebop/takeoff std_msgs/Empty "{}"
-```
-
-### ✅ Aterrizar
-
-```bash
-rostopic pub --once /bebop/land std_msgs/Empty "{}"
-```
-
-### ✅ Emergencia (corte inmediato de motores)
-
-```bash
-rostopic pub --once /bebop/reset std_msgs/Empty "{}"
-```
-
-### ✅ Movimiento básico (adelante)
-
-```bash
-rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x: 0.2, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}'
-```
-
-### ✅ Giro (izquierda)
-
-```bash
-rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.3}}'
-```
-
----
-
-## 🔹 5. Comprobar la cámara
+## 6️⃣ Visualizar Cámara
 
 ```bash
 rqt_image_view /bebop/image_raw
 ```
 
+![Camera Feed Placeholder](docs/images/bebop_camera.png)
+
 ---
 
-## 🔹 6. Ver estado de batería
+## 7️⃣ Visualizar Nodos y Topics
 
 ```bash
-rostopic echo /bebop/states/common/CommonState/BatteryStateChanged
+rqt_graph
+```
+
+Ejemplo de diagrama de nodos Bebop:
+
+![rqt\_graph Placeholder](docs/images/bebop_rqt_graph.png)
+
+**Flujo de comunicación:**
+
+```
+         +-------------+
+         |bebop_node   |
+         +-------------+
+          /     |      \
+     cmd_vel  camera    state
+       |       |        |
+   [motores] [video] [info]
 ```
 
 ---
 
-## 🔹 7. Consultar más comandos disponibles
-
-```bash
-rostopic list | grep bebop
-```
-
-y luego inspeccionar cada uno con:
-
-```bash
-rostopic info <nombre_del_topic>
-```
-
----
-
-## 🔹 8. Script de ejemplo en Python
+## 8️⃣ Ejemplo Python - Vuelo Simple
 
 ```python
 #!/usr/bin/env python3
@@ -369,7 +231,6 @@ import time
 
 rospy.init_node('bebop_test_flight')
 
-# Publishers
 takeoff_pub = rospy.Publisher('/bebop/takeoff', Empty, queue_size=1)
 land_pub = rospy.Publisher('/bebop/land', Empty, queue_size=1)
 cmd_pub = rospy.Publisher('/bebop/cmd_vel', Twist, queue_size=1)
@@ -381,52 +242,42 @@ takeoff_pub.publish(Empty())
 rospy.loginfo("Despegando...")
 time.sleep(5)
 
-# Mover hacia adelante
+# Avanzar
 move = Twist()
 move.linear.x = 0.2
 cmd_pub.publish(move)
-rospy.loginfo("Moviendo hacia adelante...")
 time.sleep(3)
 
 # Girar a la izquierda
 move = Twist()
 move.angular.z = 0.3
 cmd_pub.publish(move)
-rospy.loginfo("Girando a la izquierda...")
 time.sleep(3)
 
-# Detener movimiento
-cmd_pub.publish(Twist())
-
-# Aterrizar
+cmd_pub.publish(Twist())  # Detener
 land_pub.publish(Empty())
 rospy.loginfo("Aterrizando...")
 time.sleep(5)
-
-rospy.loginfo("Vuelo de prueba finalizado")
 ```
 
 ---
 
-## 🔹 9. Diagrama de flujo básico
+## 9️⃣ Flujo Básico de Vuelo
 
 ```
-+---------+       +-------------+       +--------+
-| Despegar| --->  | Cmd_vel     | --->  | Land   |
-+---------+       | (mover/girar)|       +--------+
-                  +-------------+
+[ TAKEOFF ] → [ CMD_VEL (mover/girar) ] → [ LAND ]
 ```
-
-Este flujo muestra la secuencia de **vuelo de prueba**:
-
-1. Despegar
-2. Moverse y/o girar
-3. Aterrizar
 
 ---
 
-**Título sugerido para este apartado:**
+## 10️⃣ Capturas de Ejemplo
 
-```
-# Conexión y Comandos Básicos del Bebop con ROS
-```
+| RViz                                            | rqt\_graph                                                 |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| ![RViz Placeholder](docs/images/bebop_rviz.png) | ![rqt\_graph Placeholder](docs/images/bebop_rqt_graph.png) |
+
+---
+
+Si quieres, puedo **generarte directamente los diagramas SVG/PNG de RViz y rqt\_graph listos para GitHub**, de modo que solo tengas que descargar y añadirlos a la carpeta `docs/images`. Esto haría tu README **completamente profesional y visual**.
+
+¿Quieres que haga eso también?
