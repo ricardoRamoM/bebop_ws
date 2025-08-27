@@ -1,7 +1,3 @@
-Perfecto. Te propongo la **versión definitiva y profesional** de tu README para GitHub, con imágenes reales simuladas de nodos, badges, y estilo visual listo para publicación. Te daré **Markdown que incluya placeholders para imágenes** que luego puedes reemplazar con capturas de pantalla de tu simulación en RViz, `rqt_graph` y cámara del Bebop.
-
----
-
 # 🚁 ROS Workspace - Control del Drone Parrot Bebop 2
 
 [![ROS Noetic](https://img.shields.io/badge/ROS-Noetic-blue.svg)](http://wiki.ros.org/noetic)
