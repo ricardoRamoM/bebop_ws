@@ -10,6 +10,8 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
 
 ---
 
+<a id="indice"></a>
+
 ## 📋 Índice
 - [📦 Estructura del Proyecto](#estructura-del-proyecto)
 - [✅ Requisitos](#requisitos)
@@ -42,6 +44,8 @@ bebop_ws/
       ├── parrot_arsdk       # Wrapper SDK Parrot
       └── bebop_autonomy     # Driver principal ROS
 ```
+
+[🔙 Volver al Índice](#indice)
 
 ---
 
@@ -84,6 +88,8 @@ sudo apt-get install -y \
     ros-noetic-joy ros-noetic-geometry-msgs ros-noetic-cv-bridge \
     python3-numpy python3-opencv python3-yaml
 ```
+
+[🔙 Volver al Índice](#indice)
 
 ---
 <a id="instalacion-desde-cero"></a>
@@ -148,6 +154,7 @@ cd ~/bebop_ws
 catkin_make -j1
 source devel/setup.bash
 ```
+[🔙 Volver al Índice](#indice)
 
 ---
 
@@ -247,6 +254,8 @@ rtt min/avg/max/mdev = 1.567/23.327/166.341/43.711 ms
 * Si ves el ejemplo ✅, la conexión con el dron está activa y puedes continuar con los comandos de ROS.
 * Si aparece el ejemplo ❌, revisa la conexión WiFi, la IP y asegúrate de que el dron esté encendido.
 
+[🔙 Volver al Índice](#indice)
+
 ---
 
 <a id="iniciar-ros"></a>
@@ -261,6 +270,8 @@ roscore
 ```
 
 > Debe mantenerse ejecutando en una terminal mientras usas ROS.
+
+[🔙 Volver al Índice](#indice)
 
 ---
 
@@ -277,6 +288,8 @@ roslaunch bebop_driver bebop_node.launch
 
 > Este comando se ejecuta en una nueva terminal con `setup.bash` cargado.
 > Una vez lanzado, el dron estará listo para recibir comandos y enviar datos a ROS.
+
+[🔙 Volver al Índice](#indice)
 
 ---
 
@@ -433,6 +446,8 @@ rostopic pub --once /bebop/reset std_msgs/Empty "{}"
 > * Para detener cualquier movimiento continuo, puedes usar **Ctrl+C** o publicar un **Detener movimiento**.
 > * Para situaciones de riesgo o emergencia, usa **`/bebop/reset`** para **apagar los motores de inmediato**.
 
+[🔙 Volver al Índice](#indice)
+
 ---
 
 <a id="verificar-topicos-disponibles"></a>
@@ -468,6 +483,8 @@ Ver datos de batería:
 rostopic echo /bebop/states/common/CommonState/BatteryStateChanged
 ```
 
+[🔙 Volver al Índice](#indice)
+
 ---
 
 <a id="ver-la-camara"></a>
@@ -482,6 +499,8 @@ rqt_image_view /bebop/image_raw
 ```
 
 > Esto es útil para inspeccionar el entorno o hacer pruebas de visión por computadora.
+
+[🔙 Volver al Índice](#indice)
 
 ---
 
@@ -513,6 +532,7 @@ Ejemplo de flujo básico en Bebop:
        |        |         |
    [motores]  [video]   [info]
 ```
+[🔙 Volver al Índice](#indice)
 
 ---
 
@@ -557,6 +577,7 @@ land_pub.publish(Empty())
 rospy.loginfo("Aterrizando...")
 time.sleep(5)
 ```
+[🔙 Volver al Índice](#indice)
 
 ---
 
