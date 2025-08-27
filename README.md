@@ -7,6 +7,34 @@
 Este repositorio contiene un **workspace ROS Noetic** con paquetes para controlar un dron **Parrot Bebop 2** mediante ROS.
 Incluye instalación desde cero, configuración del entorno, comandos básicos de vuelo y ejemplos de Python.
 
+
+---
+
+## 📋 Índice
+1️⃣ [Requisitos](#-requisitos)  
+2️⃣ [Conexión con el dron](#1️⃣-conexión-con-el-dron)  
+3️⃣ [Iniciar ROS](#2️⃣-iniciar-ros)  
+4️⃣ [Lanzar el Nodo Principal](#3️⃣-lanzar-el-nodo-principal)  
+5️⃣ [Comandos Básicos](#4️⃣-comandos-básicos)  
+6️⃣ [Verificar Tópicos Disponibles](#5️⃣-verificar-tópicos-disponibles)  
+7️⃣ [Ver la Cámara](#6️⃣-ver-la-cámara)  
+8️⃣ [Visualizar Nodos y Tópicos (rqt_graph)](#7️⃣-visualizar-nodos-y-tópicos-rqt_graph)  
+9️⃣ [Ejemplo de Control con Python](#8️⃣-ejemplo-python---vuelo-simple)  
+
+---
+---
+
+## 📋 Índice
+1️⃣ [Requisitos](#-requisitos)  
+2️⃣ [Conexión con el dron](#1️⃣-conexión-con-el-dron)  
+3️⃣ [Iniciar ROS](#2️⃣-iniciar-ros)  
+4️⃣ [Lanzar el Nodo Principal](#3️⃣-lanzar-el-nodo-principal)  
+5️⃣ [Comandos Básicos](#4️⃣-comandos-básicos)  
+6️⃣ [Verificar Tópicos Disponibles](#5️⃣-verificar-tópicos-disponibles)  
+7️⃣ [Ver la Cámara](#6️⃣-ver-la-cámara)  
+8️⃣ [Visualizar Nodos y Tópicos (rqt_graph)](#7️⃣-visualizar-nodos-y-tópicos-rqt_graph)  
+9️⃣ [Ejemplo de Control con Python](#8️⃣-ejemplo-python---vuelo-simple)  
+
 ---
 
 ## 📦 Estructura del Proyecto
