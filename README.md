@@ -11,6 +11,19 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
 ---
 
 ## 📋 Índice
+- [📦 Estructura del Proyecto](#estructura-del-proyecto)
+- [✅ Requisitos](#requisitos)
+- [🔧 Instalación desde Cero](#instalacion-desde-cero)
+- [▶️ Uso del Drone Parrot Bebop 2](#uso-del-drone-parrot-bebop-2)
+  - [1️⃣ Conexión con el dron](#conexion-con-el-dron)
+  - [2️⃣ Iniciar ROS](#iniciar-ros)
+  - [3️⃣ Lanzar el Nodo Principal](#lanzar-el-nodo-principal)
+  - [4️⃣ Comandos Básicos](#comandos-basicos)
+  - [5️⃣ Verificar Tópicos Disponibles](#verificar-topicos-disponibles)
+  - [6️⃣ Ver la Cámara](#ver-la-camara)
+  - [7️⃣ Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt_graph)
+  - [8️⃣ Ejemplo Python - Vuelo Simple](#ejemplo-python---vuelo-simple)
+  - [9️⃣ Diagrama Básico del Flujo de Vuelo](#diagrama-basico-del-flujo-de-vuelo)
 
 ---
 
