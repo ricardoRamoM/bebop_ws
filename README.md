@@ -25,7 +25,6 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
   - [6️⃣ Ver la Cámara](#ver-la-camara)
   - [7️⃣ Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt-graph)
   - [8️⃣ Ejemplo Python - Vuelo Simple](#ejemplo-python-vuelo-simple)
-  - [9️⃣ Diagrama Básico del Flujo de Vuelo](#diagrama-basico-del-flujo-de-vuelo)
 
 
 
@@ -313,7 +312,7 @@ Esta sección te permite **controlar el dron desde la terminal** mediante `rosto
 
 #### 🔹 Despegar y aterrizar
 
-* ** Despegar:**
+##### Despegar
 
 El dron despega y se mantiene flotando a baja altura (\~1 m).
 
@@ -321,7 +320,7 @@ El dron despega y se mantiene flotando a baja altura (\~1 m).
 rostopic pub --once /bebop/takeoff std_msgs/Empty "{}"
 ```
 
-* ** Aterrizar:**
+##### Aterrizar
 
 El dron desciende suavemente hasta tocar el suelo.
 
@@ -333,13 +332,20 @@ rostopic pub --once /bebop/land std_msgs/Empty "{}"
 
 #### 🔹 Movimientos Básicos del Bebop
 
-##### 1️⃣ Avanzar / Retroceder
+##### 1️⃣ Avanzar 
 
 * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.2, y:0.0, z:0.0}, angular: {x:0.0, y:0.0, z:0.0}}'
+'linear:
+  x: 0.1
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
 ```
 
 Avanza solo un instante (\~unos centímetros).
@@ -348,90 +354,249 @@ Avanza solo un instante (\~unos centímetros).
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.2, y:0.0, z:0.0}, angular: {x:0.0, y:0.0, z:0.0}}'
+'linear:
+  x: 0.1
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
 ```
 
-Avanza continuamente a 0.2 m/s hasta que presiones Ctrl+C o publiques **Detener movimiento**.
-
-* Retroceder: cambia `x` a negativo (`x:-0.2`).
+Avanza continuamente a 0.1 m/s hasta que presiones Ctrl+C o publiques **Detener movimiento**.
 
 ---
-
-##### 2️⃣ Giros (izquierda / derecha)
+##### 2️⃣ Retroceder
 
 * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.0, z:0.0}, angular: {x:0.0, y:0.0, z:0.3}}'
+'linear:
+  x: -0.1
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+Retrocede solo un instante (\~unos centímetros).
+
+* **🔵 Continuo:**
+
+```bash
+rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: -0.1
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+Avanza continuamente a -0.1 m/s hasta que presiones Ctrl+C o publiques **Detener movimiento**.
+---
+
+##### 3️⃣ Giros izquierda
+
+* **🟢 Instantáneo:**
+
+```bash
+rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.5'
 ```
 
 * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.0, z:0.0}, angular: {x:0.0, y:0.0, z:0.3}}'
-```
+'linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.5'
 
-* Girar a la derecha: cambia `z` a negativo (`z:-0.3`).
+```
 
 ---
 
-##### 3️⃣ Subir / Bajar
+##### 4️⃣ Giros derecha
 
 * **🟢 Instantáneo:**
 
 ```bash
-# Subir
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.0, z:0.2}, angular: {x:0.0, y:0.0, z:0.0}}'
-
-# Bajar
-rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.0, z:-0.2}, angular: {x:0.0, y:0.0, z:0.0}}'
+'linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: -0.5'
 ```
 
 * **🔵 Continuo:**
 
 ```bash
-# Subir
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.0, z:0.2}, angular: {x:0.0, y:0.0, z:0.0}}'
+'linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: -0.5'
 
-# Bajar
-rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.0, z:-0.2}, angular: {x:0.0, y:0.0, z:0.0}}'
 ```
 
 ---
 
-##### 4️⃣ Movimiento lateral (izquierda / derecha)
+##### 5️⃣ Subir
 
 * **🟢 Instantáneo:**
 
 ```bash
-# Derecha
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.2, z:0.0}, angular: {x:0.0, y:0.0, z:0.0}}'
-
-# Izquierda
-rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:-0.2, z:0.0}, angular: {x:0.0, y:0.0, z:0.0}}'
+'linear:
+  x: 0.0
+  y: 0.0
+  z: 0.1
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
 ```
 
 * **🔵 Continuo:**
 
 ```bash
-# Derecha
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:0.2, z:0.0}, angular: {x:0.0, y:0.0, z:0.0}}'
-
-# Izquierda
-rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
-'{linear: {x:0.0, y:-0.2, z:0.0}, angular: {x:0.0, y:0.0, z:0.0}}'
+'linear:
+  x: 0.0
+  y: 0.0
+  z: 0.1
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
 ```
 
 ---
+
+##### 6️⃣ Bajar
+
+* **🟢 Instantáneo:**
+
+```bash
+rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: 0.0
+  y: 0.0
+  z: -0.1
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+* **🔵 Continuo:**
+
+```bash
+rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: 0.0
+  y: 0.0
+  z: -0.1
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+---
+
+##### 7️⃣ Movimiento lateral derecha
+
+* **🟢 Instantáneo:**
+- Derecha
+```bash
+rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: 0.0
+  y: -0.2
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+* **🔵 Continuo:**
+
+```bash
+rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: 0.0
+  y: -0.2
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+
+---
+
+##### 8️⃣ Movimiento lateral izquierda
+
+* **🟢 Instantáneo:**
+
+```bash
+rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: 0.0
+  y: 0.2
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+* **🔵 Continuo:**
+  
+```bash
+rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
+'linear:
+  x: 0.0
+  y: 0.2
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0'
+```
+
+---
+
 
 #### 🔹 Detener o emergencia
 
@@ -492,6 +657,43 @@ Ver datos de batería:
 
 ```bash
 rostopic echo /bebop/states/common/CommonState/BatteryStateChanged
+```
+
+Ver Altura:
+
+```bash
+rostopic echo /bebop/states/ardrone3/PilotingState/AltitudeChanged
+```
+
+
+Ver Ángulos de pitch, roll y yaw:
+
+```bash
+rostopic echo /bebop/states/ardrone3/PilotingState/AttitudeChanged
+```
+
+Ver Posición estimada en GPS o local (si está disponible):
+
+```bash
+rostopic echo /bebop/states/ardrone3/PilotingState/PositionChanged
+```
+
+Ver Si el dron está sobrecalentado:
+
+```bash
+rostopic echo /bebop/states/common/OverHeatState/OverHeatChanged
+```
+
+Ver Intensidad de la señal WiFi:
+
+```bash
+rostopic echo /bebop/states/common/CommonState/WifiSignalChanged
+```
+
+Ver Estado de vuelo: tierra, despegando, volando, aterrizando:
+
+```bash
+rostopic echo /bebop/states/ardrone3/PilotingState/FlyingStateChanged
 ```
 
 [🔙 Volver al Índice](#indice)
@@ -590,15 +792,6 @@ time.sleep(5)
 ```
 [🔙 Volver al Índice](#indice)
 
----
-
-<a id="diagrama-basico-del-flujo-de-vuelo"></a>
-
-### 9️⃣ Diagrama Básico del Flujo de Vuelo
-
-```
-[ TAKEOFF ] → [ CMD_VEL (mover/girar) ] → [ LAND ]
-```
 
 ---
 
