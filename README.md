@@ -313,10 +313,21 @@ Esta sección te permite **controlar el dron desde la terminal** mediante `rosto
 
 #### 🔹 Despegar y aterrizar
 
-| Acción    | Comando                                                  | Explicación                                                   |
-| --------- | -------------------------------------------------------- | ------------------------------------------------------------- |
-| Despegar  | `rostopic pub --once /bebop/takeoff std_msgs/Empty "{}"` | El dron despega y se mantiene flotando a baja altura (\~1 m). |
-| Aterrizar | `rostopic pub --once /bebop/land std_msgs/Empty "{}"`    | El dron desciende suavemente hasta tocar el suelo.            |
+* ** Despegar:**
+
+El dron despega y se mantiene flotando a baja altura (\~1 m).
+
+```bash
+rostopic pub --once /bebop/takeoff std_msgs/Empty "{}"
+```
+
+* ** Aterrizar:**
+
+El dron desciende suavemente hasta tocar el suelo.
+
+```bash
+rostopic pub --once /bebop/land std_msgs/Empty "{}"
+```
 
 ---
 
