@@ -712,6 +712,12 @@ rqt_image_view /bebop/image_raw
 ```
 
 > Esto es útil para inspeccionar el entorno o hacer pruebas de visión por computadora.
+ 
+
+Para ver posición actual de la cámara:
+```bash
+rostopic echo /bebop/states/ardrone3/CameraState/Orientation
+```
 
 [🔙 Volver al Índice](#indice)
 
