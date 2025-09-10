@@ -399,7 +399,8 @@ angular:
   z: 0.0'
 ```
 
-Avanza continuamente a -0.1 m/s hasta que presiones Ctrl+C o publiques **Detener movimiento**.
+Retrocede continuamente a -0.1 m/s hasta que presiones Ctrl+C o publiques **Detener movimiento**.
+
 ---
 
 ##### 3️⃣ Giros izquierda
