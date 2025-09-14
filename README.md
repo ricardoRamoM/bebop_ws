@@ -17,14 +17,14 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
 - [✅ Requisitos](#requisitos)
 - [🔧 Instalación desde Cero](#instalacion-desde-cero)
 - [▶️ Uso del Drone Parrot Bebop 2](#uso-del-drone-parrot-bebop-2)
-  - [1️⃣ Conexión con el dron](#conexion-con-el-dron)
-  - [2️⃣ Iniciar ROS](#iniciar-ros)
-  - [3️⃣ Lanzar el Nodo Principal](#lanzar-el-nodo-principal)
-  - [4️⃣ Comandos Básicos](#comandos-basicos)
-  - [5️⃣ Verificar Tópicos Disponibles](#verificar-topicos-disponibles)
-  - [6️⃣ Ver la Cámara](#ver-la-camara)
-  - [7️⃣ Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt-graph)
-  - [8️⃣ Ejemplo Python - Vuelo Simple](#ejemplo-python-vuelo-simple)
+  - [1. Conexión con el dron](#conexion-con-el-dron)
+  - [2. Iniciar ROS](#iniciar-ros)
+  - [3. Lanzar el Nodo Principal](#lanzar-el-nodo-principal)
+  - [4. Comandos Básicos](#comandos-basicos)
+  - [5. Cámara del Bebop](#ver-la-camara)
+  - [6. Verificar Tópicos Disponibles](#verificar-topicos-disponibles)
+  - [7. Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt-graph)
+  - [8. Ejemplo Python - Vuelo Simple](#ejemplo-python-vuelo-simple)
 
 
 
@@ -95,7 +95,7 @@ sudo apt-get install -y \
 
 ## 🔧 Instalación desde Cero
 
-### 1️⃣ Crear workspace y compilar
+### [1] Crear workspace y compilar
 
 ```bash
 mkdir -p ~/bebop_ws/src
@@ -103,16 +103,19 @@ cd ~/bebop_ws
 catkin_make
 ```
 
-### 2️⃣ Configurar entorno
+### [2] Configurar entorno
 
 ```bash
 echo "source ~/bebop_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 3️⃣ Clonar repositorios [como se indica](https://github.com/antonellabarisic/parrot_arsdk/tree/noetic_dev):
+### [3] Clonar repositorios [como se indica](https://github.com/antonellabarisic/parrot_arsdk/tree/noetic_dev):
 
-**Parrot ARSDK**
+* **Parrot ARSDK (Parrot Augmented Reality Software Development Kit)**
+
+Parrot ARSDK (Augmented Reality Software Development Kit) es la librería oficial de Parrot que permite controlar sus drones desde software externo. Proporciona herramientas para enviar comandos de vuelo, mover la cámara, capturar fotos y video, así como acceder a datos en tiempo real como batería, GPS, altitud y velocidad. Es el Software Development Kit (SDK) oficial de Parrot que permite a desarrolladores comunicarse y controlar los drones de la marca. 
+
 
 ```bash
 cd ~/bebop_ws/src
@@ -125,14 +128,28 @@ cd ~/bebop_ws
 catkin_make
 ```
 
-**Bebop Autonomy**
+* **Bebop Autonomy**
+
+Eso que ves es Bebop Autonomy, un driver ROS (Robot Operating System) desarrollado por AutonomyLab para controlar los drones Parrot Bebop y Bebop 2. Básicamente, es un paquete ROS que actúa como interfaz entre el dron y ROS, traduciendo los comandos y publicando la información del dron en topics.
 
 ```bash
 cd ~/bebop_ws/src
 git clone https://github.com/AutonomyLab/bebop_autonomy.git
 ```
 
-Modificar en **bebop\_driver/src/bebop\_video\_decoder.cpp**:
+* **Ajustes necesarios para compilar bebop_autonomy**
+
+Para que el driver bebop_autonomy compile y funcione correctamente en sistemas modernos, se deben realizar los siguientes pasos:
+
+###### ◦ a) Modificar *bebop\_driver/src/bebop\_video\_decoder.cpp*:
+
+En versiones recientes de FFmpeg/libavcodec, algunas macros y banderas cambiaron de nombre. Por lo tanto, abre:
+
+```
+bebop_driver/src/bebop_video_decoder.cpp
+```
+
+y reemplaza:
 
 ```
 línea 93: CODEC_AP_TRUNCATED -> AV_CODEC_CAP_TRUNCATED
@@ -140,13 +157,32 @@ línea 95: CODEC_FLAG_TRUNCATED -> AV_CODEC_FLAG_TRUNCATED
 línea 97: CODEC_FLAG2_CHUNKS -> AV_CODEC_FLAG2_CHUNKS
 ```
 
-Añadir a `~/.bashrc`:
+Estos cambios se hacen porque el código original de bebop_autonomy fue escrito para versiones antiguas de FFmpeg, y sin esas correcciones la compilación fallaría con errores de símbolos no definidos.
+
+
+###### b) Configurar la variable de entorno `LD_LIBRARY_PATH`
+
+Añade lo siguiente a tu `~/.bashrc` para que el sistema encuentre las librerías del ARSDK:
 
 ```bash
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/bebop_ws/devel/lib/parrot_arsdk
 ```
 
-### 4️⃣ Compilar todo
+Luego ejecuta:
+
+```bash
+source ~/.bashrc
+```
+
+Esto se hace para que el sistema sepa dónde encontrar las librerías del ARSDK (las de Parrot) al momento de ejecutar los nodos. Si no lo añades, al correr los launch files de bebop_autonomy puedes obtener errores del tipo:
+
+```bash
+error while loading shared libraries: libarsdk.so: cannot open shared object file: No such file or directory
+```
+
+### [4] Compilar todo
+
+Es importante **compilar en un solo hilo** para evitar errores de linking con librerías externas:
 
 ```bash
 cd ~/bebop_ws
@@ -163,7 +199,7 @@ source devel/setup.bash
 
 <a id="conexion-con-el-dron"></a>
 
-### 1️⃣ Conexión con el dron
+### [1] Conexión con el dron
 
 ---
 
@@ -183,7 +219,7 @@ nmcli dev wifi connect "Bebop2-XXXXXX"
 
 Después de conectarte, debes asegurarte de que tu equipo tiene la IP correcta y puede comunicarse con el dron.
 
-1. **Comprobar la red conectada**
+##### 1. **Comprobar la red conectada**
 
    ```bash
    iwconfig
@@ -192,7 +228,7 @@ Después de conectarte, debes asegurarte de que tu equipo tiene la IP correcta y
    * **Para qué sirve:** Muestra la interfaz inalámbrica y la red actual.
    * **Qué deberías ver:** El nombre de la interfaz (ej. `wlo1`) y el SSID del dron (`Bebop2-XXXXXX`).
 
-2. **Confirmar la IP asignada**
+##### 2. **Confirmar la IP asignada**
 
    ```bash
    ifconfig wlo1
@@ -205,7 +241,7 @@ Después de conectarte, debes asegurarte de que tu equipo tiene la IP correcta y
      inet 192.168.42.22  netmask 255.255.255.0
      ```
 
-3. **Asignar IP manualmente si no hay**
+##### 3. **Asignar IP manualmente si no hay**
 
    ```bash
    sudo dhclient wlo1
@@ -259,7 +295,7 @@ rtt min/avg/max/mdev = 1.567/23.327/166.341/43.711 ms
 
 <a id="iniciar-ros"></a>
 
-### 2️⃣ Iniciar ROS
+### [2] Iniciar ROS
 
 Antes de ejecutar cualquier nodo o comando, debes iniciar el **roscore**, que es el núcleo de ROS.
 `roscore` es un servicio que permite que todos los nodos y tópicos de ROS se comuniquen entre sí.
@@ -276,7 +312,7 @@ roscore
 
 <a id="lanzar-el-nodo-principal"></a>
 
-### 3️⃣ Lanzar el Nodo Principal
+### [3] Lanzar el Nodo Principal
 
 El nodo principal del Bebop (`bebop_node`) controla la comunicación con el dron, recibe datos de sensores y envía comandos de vuelo.
 Para iniciarlo:
@@ -294,7 +330,7 @@ roslaunch bebop_driver bebop_node.launch
 
 <a id="comandos-basicos"></a>
 
-### 4️⃣ Comandos Básicos
+### [4] Comandos Básicos
 
 Esta sección te permite **controlar el dron desde la terminal** mediante `rostopic pub`, publicando mensajes en los tópicos correspondientes.
 
@@ -303,16 +339,16 @@ Esta sección te permite **controlar el dron desde la terminal** mediante `rosto
 ---
 
 
-#### 🔹 Diferencia entre `--once` y `-r <rate>`
+#### ▶🔹 Diferencia entre `--once` y `-r <rate>`
 
 > 🟢 `--once` → Movimiento **instantáneo**, solo un impulso breve.
 > 🔵 `-r 10` → Movimiento **continuo**, se repite 10 veces por segundo hasta detenerlo (Ctrl+C o Detener movimiento).
 
 ---
 
-#### 🔹 Despegar y aterrizar
+#### ▶🔹 Despegar y aterrizar
 
-##### Despegar
+* *Despegar*
 
 El dron despega y se mantiene flotando a baja altura (\~1 m).
 
@@ -320,7 +356,7 @@ El dron despega y se mantiene flotando a baja altura (\~1 m).
 rostopic pub --once /bebop/takeoff std_msgs/Empty "{}"
 ```
 
-##### Aterrizar
+* *Aterrizar*
 
 El dron desciende suavemente hasta tocar el suelo.
 
@@ -330,11 +366,11 @@ rostopic pub --once /bebop/land std_msgs/Empty "{}"
 
 ---
 
-#### 🔹 Movimientos Básicos del Bebop
+#### ▶ Movimientos Básicos del Bebop
 
-##### 1️⃣ Avanzar 
+##### 1) Avanzar 
 
-* **🟢 Instantáneo:**
+###### * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
@@ -350,7 +386,7 @@ angular:
 
 Avanza solo un instante (\~unos centímetros).
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -367,9 +403,9 @@ angular:
 Avanza continuamente a 0.1 m/s hasta que presiones Ctrl+C o publiques **Detener movimiento**.
 
 ---
-##### 2️⃣ Retroceder
+##### 2) Retroceder
 
-* **🟢 Instantáneo:**
+###### * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
@@ -385,7 +421,7 @@ angular:
 
 Retrocede solo un instante (\~unos centímetros).
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -403,9 +439,9 @@ Retrocede continuamente a -0.1 m/s hasta que presiones Ctrl+C o publiques **Dete
 
 ---
 
-##### 3️⃣ Giros izquierda
+##### 3) Giros izquierda
 
-* **🟢 Instantáneo:**
+###### * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
@@ -419,7 +455,7 @@ angular:
   z: 0.5'
 ```
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -436,9 +472,9 @@ angular:
 
 ---
 
-##### 4️⃣ Giros derecha
+##### 4) Giros derecha
 
-* **🟢 Instantáneo:**
+###### * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
@@ -452,7 +488,7 @@ angular:
   z: -0.5'
 ```
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -469,9 +505,9 @@ angular:
 
 ---
 
-##### 5️⃣ Subir
+##### 5) Subir
 
-* **🟢 Instantáneo:**
+###### * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
@@ -485,7 +521,7 @@ angular:
   z: 0.0'
 ```
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -501,9 +537,9 @@ angular:
 
 ---
 
-##### 6️⃣ Bajar
+##### 6) Bajar
 
-* **🟢 Instantáneo:**
+###### * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
@@ -517,7 +553,7 @@ angular:
   z: 0.0'
 ```
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -533,10 +569,10 @@ angular:
 
 ---
 
-##### 7️⃣ Movimiento lateral derecha
+##### 7) Movimiento lateral derecha
 
-* **🟢 Instantáneo:**
-- Derecha
+###### * **🟢 Instantáneo:**
+
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
 'linear:
@@ -549,7 +585,7 @@ angular:
   z: 0.0'
 ```
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
 
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -563,12 +599,11 @@ angular:
   z: 0.0'
 ```
 
-
 ---
 
-##### 8️⃣ Movimiento lateral izquierda
+##### 8) Movimiento lateral izquierda
 
-* **🟢 Instantáneo:**
+###### * **🟢 Instantáneo:**
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
@@ -582,7 +617,7 @@ angular:
   z: 0.0'
 ```
 
-* **🔵 Continuo:**
+###### * **🔵 Continuo:**
   
 ```bash
 rostopic pub -r 10 /bebop/cmd_vel geometry_msgs/Twist \
@@ -599,16 +634,16 @@ angular:
 ---
 
 
-#### 🔹 Detener o emergencia
+#### ▶🔹 Detener o emergencia
 
-* **Detener movimiento:** Frenar inmediatamente cualquier movimiento continuo:
+* *Detener movimiento:* Frenar inmediatamente cualquier movimiento continuo:
 
 ```bash
 rostopic pub --once /bebop/cmd_vel geometry_msgs/Twist \
 '{linear: {x:0.0, y:0.0, z:0.0}, angular: {x:0.0, y:0.0, z:0.0}}'
 ```
 
-* **Emergencia:** Apaga los motores de inmediato y reinicia los sistemas del dron.
+* *Emergencia:* Apaga los motores de inmediato y reinicia los sistemas del dron.
 
 ```bash
 rostopic pub --once /bebop/reset std_msgs/Empty "{}"
@@ -626,10 +661,80 @@ rostopic pub --once /bebop/reset std_msgs/Empty "{}"
 [🔙 Volver al Índice](#indice)
 
 ---
+<a id="ver-la-camara"></a>
+
+### [5] Cámara del Bebop
+
+
+El Bebop 2 permite mover y acceder a la cámara delantera en tiempo real, así como guardar imágenes o grabar video para análisis posterior.
+
+---
+
+#### 1. Ver la cámara en tiempo real
+
+Permite **visualizar la cámara delantera del dron en tiempo real**.
+
+```bash
+rqt_image_view /bebop/image_raw
+```
+
+Esto abrirá una ventana con el video en vivo.
+
+> Útil para inspeccionar el entorno o realizar pruebas de visión por computadora.
+
+---
+
+#### 2. Mover la cámara
+
+Para mover la cámara (eje vertical):
+
+```bash
+rostopic pub --once /bebop/camera_control geometry_msgs/Twist \
+'{angular: {y: -90.0}}'
+````
+
+* Valores negativos → cámara hacia abajo.
+* Valores positivos → cámara hacia arriba.
+* Límite aproximado: entre `-90.0` y `+90.0`.
+
+Ver orientación actual de la cámara:
+
+```bash
+rostopic echo /bebop/states/ardrone3/CameraState/Orientation
+```
+
+---
+
+#### 3. Guardar imágenes
+
+Se pueden guardar capturas directamente desde el tópico de la cámara:
+
+```bash
+rosrun image_view image_saver image:=/bebop/image_raw _filename_format:=/tmp/frame%04d.jpg
+```
+
+Esto guardará imágenes en `/tmp/` con nombres como `frame0001.jpg`, `frame0002.jpg`, etc.
+
+---
+
+#### 4. Grabar video (rosbag)
+
+También es posible grabar un **rosbag** con el stream de la cámara para análisis posterior:
+
+```bash
+rosbag record /bebop/image_raw
+```
+
+Con este archivo se pueden reproducir y extraer imágenes o reconstruir video después.
+
+
+[🔙 Volver al Índice](#indice)
+
+---
 
 <a id="verificar-topicos-disponibles"></a>
 
-### 5️⃣ Verificar Tópicos Disponibles
+### [6] Verificar Tópicos Disponibles
 
 Los **tópicos** son canales de comunicación entre nodos de ROS.
 Esta sección permite **ver qué información envía y recibe el dron**, como la cámara, la odometría o la batería.
@@ -701,32 +806,9 @@ rostopic echo /bebop/states/ardrone3/PilotingState/FlyingStateChanged
 
 ---
 
-<a id="ver-la-camara"></a>
-
-### 6️⃣ Ver la Cámara
-
-Permite **visualizar la cámara delantera del dron en tiempo real**.
-Se usa `rqt_image_view` para abrir una ventana donde se muestra el video:
-
-```bash
-rqt_image_view /bebop/image_raw
-```
-
-> Esto es útil para inspeccionar el entorno o hacer pruebas de visión por computadora.
- 
-
-Para ver posición actual de la cámara:
-```bash
-rostopic echo /bebop/states/ardrone3/CameraState/Orientation
-```
-
-[🔙 Volver al Índice](#indice)
-
----
-
 <a id="visualizar-nodos-y-topicos-rqt-graph"></a>
 
-### 7️⃣ Visualizar Nodos y Tópicos (`rqt_graph`)
+### [7] Visualizar Nodos y Tópicos (`rqt_graph`)
 
 `rqt_graph` muestra un **diagrama visual de los nodos y sus conexiones** en ROS.
 Esto te ayuda a entender cómo se comunican los distintos componentes del dron, por ejemplo:
@@ -758,7 +840,7 @@ Ejemplo de flujo básico en Bebop:
 
 <a id="ejemplo-python-vuelo-simple"></a>
 
-### 8️⃣ Ejemplo Python - Vuelo Simple
+### [8] Ejemplo Python - Vuelo Simple
 
 ```python
 #!/usr/bin/env python3
