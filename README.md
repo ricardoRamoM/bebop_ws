@@ -663,7 +663,7 @@ rostopic pub --once /bebop/reset std_msgs/Empty "{}"
 ---
 <a id="ver-la-camara"></a>
 
-### [5] Cámara del Bebop
+### [5] Cámara del Bebop 🎥
 
 
 El Bebop 2 permite mover y acceder a la cámara delantera en tiempo real, así como guardar imágenes o grabar video para análisis posterior.
@@ -682,26 +682,81 @@ Esto abrirá una ventana con el video en vivo.
 
 > Útil para inspeccionar el entorno o realizar pruebas de visión por computadora.
 
----
-
-#### 2. Mover la cámara
-
-Para mover la cámara (eje vertical):
-
-```bash
-rostopic pub --once /bebop/camera_control geometry_msgs/Twist \
-'{angular: {y: -90.0}}'
-````
-
-* Valores negativos → cámara hacia abajo.
-* Valores positivos → cámara hacia arriba.
-* Límite aproximado: entre `-90.0` y `+90.0`.
-
-Ver orientación actual de la cámara:
+Para ver la posición actual de la cámara:
 
 ```bash
 rostopic echo /bebop/states/ardrone3/CameraState/Orientation
 ```
+
+---
+
+#### 2. Mover la cámara
+
+El **Bebop 2** permite mover su cámara mediante el tópico `/bebop/camera_control`.
+Este tópico utiliza mensajes del tipo `geometry_msgs/Twist`, donde:
+
+* `angular.y` → **Tilt** (arriba / abajo, rango `-83°` a `+83°`).
+* `angular.z` → **Pan** (izquierda / derecha, rango `-180°` a `+180°`).
+* Los demás campos (`linear.*`, `angular.x`) se mantienen en `0`.
+
+### Comandos de ejemplo
+
+👉 **Apuntar al piso (tilt -83°):**
+
+```bash
+rostopic pub --once /bebop/camera_control geometry_msgs/Twist \
+"linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: -83.0
+  z: 0.0"
+```
+
+👉 **Apuntar al techo (tilt +83°):**
+
+```bash
+rostopic pub --once /bebop/camera_control geometry_msgs/Twist \
+"linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 83.0
+  z: 0.0"
+```
+
+👉 **Girar a la derecha (pan +90°):**
+
+```bash
+rostopic pub --once /bebop/camera_control geometry_msgs/Twist \
+"linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 90.0"
+```
+
+👉 **Girar a la izquierda (pan -90°):**
+
+```bash
+rostopic pub --once /bebop/camera_control geometry_msgs/Twist \
+"linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: -90.0"
+```
+
 
 ---
 
