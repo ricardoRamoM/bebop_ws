@@ -85,7 +85,7 @@ sudo apt-get install -y \
 ```bash
 sudo apt-get install -y \
     ros-noetic-joy ros-noetic-geometry-msgs ros-noetic-cv-bridge \
-    python3-numpy python3-opencv python3-yaml
+    python3-numpy python3-opencv python3-yaml python3-pip
 ```
 
 [🔙 Volver al Índice](#indice)
