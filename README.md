@@ -960,27 +960,27 @@ rostopic echo /bebop/imu/data
 **Tópicos ROS:**
 
 
-# Odometría completa (pose + velocidades)
+Odometría completa (pose + velocidades)
 ```bash
 rostopic echo /bebop/odom
 ```
 
-# Solo posición (x, y, z)
+Solo posición (x, y, z)
 ```bash
 rostopic echo /bebop/odom/pose/pose
 ```
 
-# Solo orientación (cuaternión)
+Solo orientación (cuaternión)
 ```bash
 rostopic echo /bebop/odom/pose/pose/orientation
 ```
 
-# Solo velocidades lineales y angulares
+Solo velocidades lineales y angulares
 ```bash
 rostopic echo /bebop/odom/twist/twist
 ```
 
-# Frecuencia de publicación
+Frecuencia de publicación
 ```bash
 rostopic hz /bebop/odom
 ```
@@ -1072,9 +1072,13 @@ GPS         → coordenadas globales         → Posición global en exteriores
 -----------------------------------------------------------
 Odometría   → posición + orientación + velocidades → Navegación y planificación
 ```
+
+
+[🔙 Volver al Índice](#indice)
+
 ---
 
-<a id="transformaciones_tf"></a>
+<a id="transformaciones-tf"></a>
 
 ### [8] Transformaciones tf en ROS
 
@@ -1184,6 +1188,7 @@ Visualizar en tiempo real en RViz:
 > Cada frame se actualiza en tiempo real, permitiendo al dron saber la posición relativa de sensores, cámara, objetos y su propia odometría.
 
 
+[🔙 Volver al Índice](#indice)
 
 ---
 
