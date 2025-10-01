@@ -23,8 +23,10 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
   - [4. Comandos Básicos](#comandos-basicos)
   - [5. Cámara del Bebop](#ver-la-camara)
   - [6. Verificar Tópicos Disponibles](#verificar-topicos-disponibles)
-  - [7. Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt-graph)
-  - [8. Ejemplo Python - Vuelo Simple](#ejemplo-python-vuelo-simple)
+  - [7. Sensores y Estimación de Movimiento](#estimacion-movimiento)
+  - [8. Transformaciones tf en ROS](#transformaciones-tf)
+  - [9. Visualizar Nodos y Tópicos (rqt_graph)](#visualizar-nodos-y-topicos-rqt-graph)
+  - [10. Ejemplo Python - Vuelo Simple](#ejemplo-python-vuelo-simple)
 
 
 
@@ -857,13 +859,337 @@ Ver Estado de vuelo: tierra, despegando, volando, aterrizando:
 rostopic echo /bebop/states/ardrone3/PilotingState/FlyingStateChanged
 ```
 
+Ver Estado de vuelo: tierra, despegando, volando, aterrizando:
+
+```bash
+rostopic echo /bebop/states/ardrone3/PilotingState/FlyingStateChanged
+```
+
+Perfecto 👌, aquí tienes los comandos siguiendo la misma **sintaxis de tu README**:
+
+---
+
+Ver Odometría completa (posición y orientación en 3D):
+
+```bash
+rostopic echo /bebop/odom
+```
+
+Ver Solo posición (x, y, z):
+
+```bash
+rostopic echo /bebop/odom/pose/pose
+```
+
+Ver Solo velocidades lineales y angulares:
+
+```bash
+rostopic echo /bebop/odom/twist/twist
+```
+
+Ver Frecuencia de odometría (Hz):
+
+```bash
+rostopic hz /bebop/odom
+```
+
+Ver Datos completos del IMU (orientación, aceleración, giroscopio):
+
+```bash
+rostopic echo /bebop/imu/data
+```
+
+
 [🔙 Volver al Índice](#indice)
+
+---
+
+<a id="estimacion-movimiento"></a>
+
+### [7] Sensores y Estimación de Movimiento
+
+El **Bebop 2** cuenta con varios sensores que permiten estimar su posición, velocidad y orientación.
+En ROS, se puede acceder a esta información a través de tópicos como `/bebop/imu/data`, `/bebop/odom`, `/bebop/states/ardrone3/PilotingState/PositionChanged` y `/bebop/image_raw`.
+
+---
+
+#### IMU (Unidad de Medición Inercial)
+
+**Características:**
+
+* Sensor interno que mide aceleraciones y velocidades angulares.
+* Alta frecuencia de actualización.
+* Propenso a **deriva** si se integra para calcular posición.
+
+**Cuándo usar:**
+
+* Mantener estabilidad del dron (control de actitud).
+* Detectar vibraciones o movimientos rápidos.
+* Base para calcular velocidad o posición en combinación con otros sensores.
+
+**Cuándo no usar:**
+
+* Como única fuente para obtener posición absoluta o altitud exacta.
+
+**Tópicos ROS:**
+
+```bash
+# IMU completa (aceleración, orientación y giroscopio)
+rostopic echo /bebop/imu/data
+```
+
+---
+
+#### Odometría
+
+**Características:**
+
+* Estimación de posición y velocidad del dron en el espacio.
+* Calculada fusionando IMU, cámara, altímetro y GPS.
+* Publica pose y velocidades lineales y angulares.
+
+**Cuándo usar:**
+
+* Navegación autónoma y planificación de trayectorias.
+* Control de posición y velocidad en interiores y exteriores.
+
+**Cuándo no usar:**
+
+* Solo en exteriores sin GPS, si se necesita precisión global absoluta.
+
+**Tópicos ROS:**
+
+
+# Odometría completa (pose + velocidades)
+```bash
+rostopic echo /bebop/odom
+```
+
+# Solo posición (x, y, z)
+```bash
+rostopic echo /bebop/odom/pose/pose
+```
+
+# Solo orientación (cuaternión)
+```bash
+rostopic echo /bebop/odom/pose/pose/orientation
+```
+
+# Solo velocidades lineales y angulares
+```bash
+rostopic echo /bebop/odom/twist/twist
+```
+
+# Frecuencia de publicación
+```bash
+rostopic hz /bebop/odom
+```
+
+---
+
+#### GPS
+
+**Características:**
+
+* Proporciona coordenadas globales (latitud, longitud, altitud).
+* Precisión moderada, depende de la señal satelital.
+
+**Cuándo usar:**
+
+* Vuelos exteriores para referencia global.
+* Complementar la odometría interna para mejorar precisión.
+
+**Cuándo no usar:**
+
+* Interiores o zonas con señal GPS débil o nula.
+
+**Tópico ROS:**
+
+```bash
+rostopic echo /bebop/states/ardrone3/PilotingState/PositionChanged
+```
+
+---
+
+#### Cámara frontal → Visual Odometry
+
+**Características:**
+
+* Estima desplazamiento relativo mediante imágenes.
+* Permite complementar la odometría con referencia visual.
+* Requiere buena iluminación y texturas en el entorno.
+
+**Cuándo usar:**
+
+* Interiores o zonas sin GPS.
+* Detectar movimiento relativo o obstáculos.
+
+**Cuándo no usar:**
+
+* Escenas homogéneas (paredes lisas) o poca luz.
+* Como única fuente para posicionamiento global en exteriores.
+
+**Tópico ROS:**
+
+```bash
+rostopic echo /bebop/image_raw
+```
+
+---
+
+#### Altímetro / Barómetro → Estimación de altura sobre el suelo
+
+**Características:**
+
+* Mide presión atmosférica y la convierte en altura relativa.
+* Alta frecuencia y confiable a corto plazo.
+
+**Cuándo usar:**
+
+* Mantener altura constante en interiores y exteriores.
+* Complementar GPS para control de altitud.
+
+**Cuándo no usar:**
+
+* No reemplaza medición precisa de altitud global si se necesita para navegación exterior exacta.
+
+**Tópico ROS:**
+
+```bash
+rostopic echo /bebop/states/ardrone3/PilotingState/AltitudeChanged
+```
+
+---
+
+💡 **Resumen visual rápido:**
+
+```
+Sensor      → Datos                         → Uso principal
+IMU         → aceleración + giros          → Control de actitud, detección de vibraciones
+Cámara      → imágenes (Visual Odometry)  → Estimación de desplazamiento relativo
+Altímetro   → presión atmosférica          → Control de altura sobre el suelo
+GPS         → coordenadas globales         → Posición global en exteriores
+-----------------------------------------------------------
+Odometría   → posición + orientación + velocidades → Navegación y planificación
+```
+---
+
+<a id="transformaciones_tf"></a>
+
+### [8] Transformaciones tf en ROS
+
+El paquete **`tf`** de ROS permite **gestionar los marcos de referencia (frames)** del dron y transformar posiciones y orientaciones entre ellos.
+No es un sensor: **no mide nada**, sino que organiza y relaciona los datos que vienen de IMU, cámara, GPS, altímetro y odometría.
+
+---
+
+#### 🔹 Qué hace `tf`
+
+* Mantiene un **árbol de frames** para todo el dron y su entorno.
+* Permite **transformar coordenadas de un frame a otro** automáticamente.
+* Facilita la **planificación de trayectorias, seguimiento de objetos y visualización en RViz**.
+
+**Ejemplo de frames en Bebop 2:**
+
+| Frame          | Descripción                                 |
+| -------------- | ------------------------------------------- |
+| `/odom`        | Referencia de odometría (posición estimada) |
+| `/base_link`   | Centro del dron                             |
+| `/camera_link` | Cámara frontal                              |
+| `/map`         | Referencia global opcional                  |
+
+---
+
+#### 🔹 Comandos ROS importantes
+
+Ver la posición y orientación de un frame respecto a otro:
+
+```bash
+rosrun tf tf_echo /odom /base_link
+```
+
+Ver el frame de la cámara respecto al dron:
+
+```bash
+rosrun tf tf_echo /odom /camera_link
+```
+
+Ver el **árbol completo de frames** y generar un PDF con las relaciones:
+
+```bash
+rosrun tf view_frames
+```
+
+Visualizar en tiempo real en RViz:
+
+* Añade un **TF Display** y selecciona `/odom` como marco base.
+* Verás cómo todos los frames (cámara, base, sensores) se posicionan en el espacio.
+
+---
+
+#### 🔹 Cómo se relaciona con los sensores
+
+* **IMU** → orientación y velocidad angular → se refleja en `/base_link`.
+* **Cámara** → Visual Odometry → posición relativa de `/camera_link`.
+* **Altímetro** → altura sobre el suelo → se refleja en `/base_link`.
+* **GPS** → posición global → opcionalmente se relaciona con `/map`.
+* **Odometría** → estimación de posición → frame principal `/odom` para referencia de todos los demás.
+
+---
+
+#### 🔹 Cuándo conviene usar `tf`
+
+* Cuando necesitas **relacionar sensores con la posición del dron** para planificar movimientos.
+* Para **visualización en RViz** y depuración de vuelo.
+* En **seguimiento de objetos**: convierte coordenadas de la cámara a un frame del dron.
+* Para **control de cámaras** o coordinación de múltiples sensores.
+* En **fusión de sensores**, para mantener consistencia entre IMU, altímetro, GPS y odometría.
+
+---
+
+#### 🔹 Casos reales de uso
+
+1. **Navegación autónoma en interiores:**
+
+   * Transformas puntos de un mapa (`/map`) al frame del dron (`/base_link`) para planificar trayectorias.
+
+2. **Seguimiento de un objeto detectado por la cámara:**
+
+   * Transformas la posición del objeto (`/camera_link`) al frame del dron (`/base_link`) y ajustas comandos de vuelo.
+
+3. **Visualización en RViz:**
+
+   * Comprobar que la odometría y la posición estimada coinciden con la posición real.
+
+4. **Control de sensores:**
+
+   * Coordinar IMU, cámara y altímetro para mantener estabilidad y altura constante.
+
+---
+
+#### 🔹 Mini-diagrama conceptual de `tf` en un caso real
+
+```
+                /map (opcional)
+                     |
+                   /odom
+                     |
+                 /base_link
+                /          \
+      /camera_link       /sensor_frames (IMU, altímetro)
+                \           /
+              Objetos detectados
+```
+
+> Cada frame se actualiza en tiempo real, permitiendo al dron saber la posición relativa de sensores, cámara, objetos y su propia odometría.
+
+
 
 ---
 
 <a id="visualizar-nodos-y-topicos-rqt-graph"></a>
 
-### [7] Visualizar Nodos y Tópicos (`rqt_graph`)
+### [9] Visualizar Nodos y Tópicos (`rqt_graph`)
 
 `rqt_graph` muestra un **diagrama visual de los nodos y sus conexiones** en ROS.
 Esto te ayuda a entender cómo se comunican los distintos componentes del dron, por ejemplo:
@@ -895,7 +1221,7 @@ Ejemplo de flujo básico en Bebop:
 
 <a id="ejemplo-python-vuelo-simple"></a>
 
-### [8] Ejemplo Python - Vuelo Simple
+### [10] Ejemplo Python - Vuelo Simple
 
 ```python
 #!/usr/bin/env python3
