@@ -16,6 +16,11 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
 - [📦 Estructura del Proyecto](#estructura-del-proyecto)
 - [✅ Requisitos](#requisitos)
 - [🔧 Instalación desde Cero](#instalacion-desde-cero)
+-  [📁 Creación de Packages ROS para el Bebop 2](#creacion-de-packages-ros-para-el-bebop-2)
+  - [1. ¿Por qué usar packages ROS?](#por-que-usar-packages-ros)
+  - [2. Estructura del Workspace](#estructura-del-workspace)
+  - [3. Crear un Package para el Bebop 2](#crear-un-package-para-el-bebop-2)
+  - [4. Organización del Código](#organizacion-del-codigo)
 - [▶️ Uso del Drone Parrot Bebop 2](#uso-del-drone-parrot-bebop-2)
   - [1. Conexión con el dron](#conexion-con-el-dron)
   - [2. Iniciar ROS](#iniciar-ros)
@@ -42,8 +47,10 @@ bebop_ws/
  ├── build/
  ├── devel/
  └── src/
-      ├── parrot_arsdk       # Wrapper SDK Parrot
-      └── bebop_autonomy     # Driver principal ROS
+      ├── parrot_arsdk       # Package del Wrapper SDK Parrot
+      └── bebop_autonomy     # Package del Driver principal ROS
+  Package del 
+
 ```
 
 [🔙 Volver al Índice](#indice)
@@ -191,6 +198,102 @@ cd ~/bebop_ws
 catkin_make -j1
 source devel/setup.bash
 ```
+[🔙 Volver al Índice](#indice)
+
+---
+
+## 📁 Creación de Packages ROS para el Bebop 2
+
+Para el desarrollo de scripts personalizados, control autónomo y futuros algoritmos de navegación,
+se recomienda crear uno o más **packages ROS** dentro del workspace.
+Aunque el driver del Parrot Bebop 2 permite controlar el dron directamente desde la terminal,
+el uso de packages facilita la organización, reutilización y escalabilidad del código.
+
+Las secciones posteriores de este manual utilizarán scripts contenidos en estos packages.
+
+---
+
+### 1. ¿Por qué usar packages ROS?
+
+El uso de packages ROS permite:
+
+* Organizar el código de control del dron de forma estructurada
+* Desarrollar nodos propios en Python o C++
+* Facilitar la ejecución mediante archivos `launch`
+* Preparar el sistema para control autónomo, visión y navegación
+* Mantener separado el código del usuario del driver del Bebop
+
+---
+
+### 2. Estructura del Workspace
+
+Se asume el uso de un workspace `catkin_ws` ubicado en el directorio home del usuario:
+
+```bash
+~/catkin_ws/
+├── src/
+│   ├── bebop_autonomy/      # Driver del Bebop 2
+│   └── bebop_control/       # Package del usuario
+├── devel/
+└── build/
+```
+
+El package `bebop_autonomy` corresponde al driver oficial del dron, mientras que
+`bebop_control` será utilizado para el desarrollo de código propio.
+
+---
+
+### 3. Crear un Package para el Bebop 2
+
+Desde el directorio `src` del workspace, crear el package:
+
+```bash
+cd ~/catkin_ws/src
+catkin_create_pkg bebop_control rospy geometry_msgs sensor_msgs std_msgs
+```
+
+Luego compilar el workspace:
+
+```bash
+cd ~/catkin_ws
+catkin_make
+source devel/setup.bash
+```
+
+Este package será utilizado para almacenar scripts de control, nodos de prueba y ejemplos de vuelo.
+
+---
+
+### 4. Organización del Código
+
+Se recomienda la siguiente estructura dentro del package:
+
+```bash
+bebop_control/
+├── scripts/
+│   ├── takeoff_land.py
+│   ├── simple_flight.py
+│   └── keyboard_control.py
+├── launch/
+│   └── simple_flight.launch
+├── CMakeLists.txt
+└── package.xml
+```
+
+* `scripts/`: nodos en Python para control del dron
+* `launch/`: archivos para lanzar nodos automáticamente
+* `package.xml`: dependencias del package
+
+Los scripts deben tener permisos de ejecución:
+
+```bash
+chmod +x scripts/*.py
+```
+
+---
+
+Al finalizar esta sección, el sistema queda listo para ejecutar tanto los comandos básicos del driver como scripts personalizados desde ROS.
+
 [🔙 Volver al Índice](#indice)
 
 ---
