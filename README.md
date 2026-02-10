@@ -16,7 +16,7 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
 - [📦 Estructura del Proyecto](#estructura-del-proyecto)
 - [✅ Requisitos](#requisitos)
 - [🔧 Instalación desde Cero](#instalacion-desde-cero)
-- [📁 Creación de Packages ROS para el Bebop 2](#creacion-de-packages-ros-para-el-bebop-2)
+- [📁 Creación de Packages ROS para el Bebop 2](#creacion-de-packages)
   - [1. ¿Por qué usar packages ROS?](#por-que-usar-packages-ros)
   - [2. Estructura del Workspace](#estructura-del-workspace)
   - [3. Crear un Package para el Bebop 2](#crear-un-package-para-el-bebop-2)
@@ -202,7 +202,7 @@ source devel/setup.bash
 
 ---
 
-<a id="creacion-de-packages-ros-para-el-bebop-2></a>"></a>
+<a id="creacion-de-packages"></a>
 
 ## 📁 Creación de Packages ROS para el Bebop 2
 
