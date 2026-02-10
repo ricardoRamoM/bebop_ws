@@ -255,6 +255,12 @@ cd ~/catkin_ws/src
 catkin_create_pkg bebop_control rospy geometry_msgs sensor_msgs std_msgs
 ```
 
+> **Nota:** El nombre `bebop_control` es solo una recomendación.
+> Puede sustituirse por cualquier otro nombre que se ajuste a las necesidades del proyecto,
+> por ejemplo `bebop_autonomy`, `bebop_navigation` o `drone_control`.
+> En caso de cambiar el nombre del package, deberá utilizarse el mismo nombre al ejecutar
+> nodos con `rosrun` o al crear archivos `launch`.
+
 Luego compilar el workspace:
 
 ```bash
