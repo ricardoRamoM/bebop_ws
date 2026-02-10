@@ -211,8 +211,6 @@ se recomienda crear uno o más **packages ROS** dentro del workspace.
 Aunque el driver del Parrot Bebop 2 permite controlar el dron directamente desde la terminal,
 el uso de packages facilita la organización, reutilización y escalabilidad del código.
 
-Las secciones posteriores de este manual utilizarán scripts contenidos en estos packages.
-
 ---
 <a id="por-que-usar-packages-ros"></a>
 
