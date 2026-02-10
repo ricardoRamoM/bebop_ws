@@ -202,6 +202,8 @@ source devel/setup.bash
 
 ---
 
+<a id="creacion-de-packages-ros-para-el-bebop-2></a>"></a>
+
 ## 📁 Creación de Packages ROS para el Bebop 2
 
 Para el desarrollo de scripts personalizados, control autónomo y futuros algoritmos de navegación,
@@ -212,6 +214,7 @@ el uso de packages facilita la organización, reutilización y escalabilidad del
 Las secciones posteriores de este manual utilizarán scripts contenidos en estos packages.
 
 ---
+<a id="por-que-usar-packages-ros"></a>
 
 ### 1. ¿Por qué usar packages ROS?
 
@@ -224,6 +227,7 @@ El uso de packages ROS permite:
 * Mantener separado el código del usuario del driver del Bebop
 
 ---
+<a id="estructura-del-workspace"></a>
 
 ### 2. Estructura del Workspace
 
@@ -242,6 +246,7 @@ El package `bebop_autonomy` corresponde al driver oficial del dron, mientras que
 `bebop_control` será utilizado para el desarrollo de código propio.
 
 ---
+<a id="crear-un-package-para-el-bebop-2"></a>
 
 ### 3. Crear un Package para el Bebop 2
 
@@ -263,6 +268,7 @@ source devel/setup.bash
 Este package será utilizado para almacenar scripts de control, nodos de prueba y ejemplos de vuelo.
 
 ---
+<a id="organizacion-del-codigo"></a>
 
 ### 4. Organización del Código
 
