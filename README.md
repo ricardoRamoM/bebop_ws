@@ -48,8 +48,8 @@ bebop_ws/
  ├── devel/
  └── src/
       ├── parrot_arsdk       # Package del Wrapper SDK Parrot
-      └── bebop_autonomy     # Package del Driver principal ROS
-  Package del 
+      ├── bebop_autonomy     # Package del Driver principal ROS
+      └── bebob_control      # Package donde se localizan los códigos personalizados
 
 ```
 
@@ -1346,7 +1346,86 @@ Ejemplo de flujo básico en Bebop:
 
 <a id="ejemplo-python-vuelo-simple"></a>
 
-### [10] Ejemplo Python - Vuelo Simple
+### [10] Ejemplo Python
+
+A partir de este punto, el control del Parrot Bebop 2 puede realizarse mediante nodos
+desarrollados por el usuario. En particular, los ejemplos en Python presentados más
+adelante en este manual se ejecutarán desde el package creado previamente, utilizando
+los tópicos expuestos por el driver del Bebop. Esto permite pasar de un control manual
+desde la terminal a un control programado y reproducible, sentando las bases para
+aplicaciones más avanzadas como vuelo autónomo, control por sensores o navegación.
+
+
+Esto **conecta mentalmente**:
+
+> packages → scripts → ejemplo Python → autonomía
+
+
+#### Primer nodo de control limpio (Python, minimalista y correcto)
+
+Este es un **primer nodo ideal**: despega, espera y aterriza.
+
+##### 📄 `scripts/simple_flight.py`
+
+```python
+#!/usr/bin/env python3
+
+import rospy
+from std_msgs.msg import Empty
+
+def main():
+    rospy.init_node('bebop_simple_flight')
+
+    takeoff_pub = rospy.Publisher('/bebop/takeoff', Empty, queue_size=1)
+    land_pub = rospy.Publisher('/bebop/land', Empty, queue_size=1)
+
+    rospy.sleep(2)
+
+    rospy.loginfo("Despegando...")
+    takeoff_pub.publish(Empty())
+
+    rospy.sleep(5)
+
+    rospy.loginfo("Aterrizando...")
+    land_pub.publish(Empty())
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass
+```
+
+Permisos:
+
+```bash
+chmod +x simple_flight.py
+```
+
+Ejecución:
+
+```bash
+rosrun bebop_control simple_flight.py
+```
+
+📌 **Por qué este nodo es ideal para empezar**
+
+* Usa solo tópicos básicos del driver
+* No depende de sensores
+* Es fácil de entender y depurar
+* Demuestra claramente la ventaja de usar packages
+
+---
+
+#### Conectar explícitamente este nodo con el driver (explicación corta)
+
+Este nodo no controla directamente el hardware del dron, sino que publica mensajes
+en los tópicos expuestos por el driver del Parrot Bebop 2. El driver se encarga de
+traducir estos mensajes a comandos de bajo nivel enviados al dron a través de la red.
+De esta forma, el package del usuario permanece desacoplado del hardware, siguiendo
+la filosofía modular de ROS.
+
+Este siguiente codigo despega, avanza, gira y aterriza.
 
 ```python
 #!/usr/bin/env python3
