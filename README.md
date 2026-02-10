@@ -308,6 +308,13 @@ Al finalizar esta sección, el sistema queda listo para ejecutar tanto los coman
 
 ## ▶️ Uso del Drone Parrot Bebop 2
 
+Esta sección describe el uso del Parrot Bebop 2 mediante los comandos y nodos
+proporcionados directamente por el driver, sin el uso de packages personalizados.
+El objetivo es familiarizarse con la conexión, los tópicos disponibles y el
+comportamiento básico del dron utilizando únicamente la terminal. Este enfoque
+permite validar el correcto funcionamiento del sistema antes de introducir
+código propio o control programado.
+
 <a id="conexion-con-el-dron"></a>
 
 ### [1] Conexión con el dron
