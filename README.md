@@ -21,6 +21,7 @@ Incluye instalación desde cero, configuración del entorno, comandos básicos d
   - [2. Estructura del Workspace](#estructura-del-workspace)
   - [3. Crear un Package para el Bebop 2](#crear-un-package-para-el-bebop-2)
   - [4. Organización del Código](#organizacion-del-codigo)
+
 - [▶️ Uso del Drone Parrot Bebop 2](#uso-del-drone-parrot-bebop-2)
   - [1. Conexión con el dron](#conexion-con-el-dron)
   - [2. Iniciar ROS](#iniciar-ros)
